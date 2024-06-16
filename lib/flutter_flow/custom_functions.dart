@@ -579,3 +579,14 @@ String differenceInHoursAndMinutes(
 
   return '$hoursStr $minutesStr';
 }
+
+bool searchStringInList(
+  String stringList,
+  String stringSearch,
+) {
+  if (stringList!.toLowerCase().contains(stringSearch!.toLowerCase())) {
+    return true;
+  } else {
+    return false;
+  }
+}

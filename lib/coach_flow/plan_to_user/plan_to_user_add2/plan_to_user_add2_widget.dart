@@ -8,6 +8,7 @@ import '/components/back/back_widget.dart';
 import '/components/choice_chip/choice_chip_widget.dart';
 import '/components/plan_to_user_add2_dropdown_widget.dart';
 import '/components/plan_to_user_add2_name_input_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -16,6 +17,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'plan_to_user_add2_model.dart';
 export 'plan_to_user_add2_model.dart';
@@ -40,12 +42,15 @@ class PlanToUserAdd2Widget extends StatefulWidget {
   State<PlanToUserAdd2Widget> createState() => _PlanToUserAdd2WidgetState();
 }
 
-class _PlanToUserAdd2WidgetState extends State<PlanToUserAdd2Widget> {
+class _PlanToUserAdd2WidgetState extends State<PlanToUserAdd2Widget>
+    with TickerProviderStateMixin {
   late PlanToUserAdd2Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -75,6 +80,28 @@ class _PlanToUserAdd2WidgetState extends State<PlanToUserAdd2Widget> {
         });
       });
     }
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -618,7 +645,8 @@ class _PlanToUserAdd2WidgetState extends State<PlanToUserAdd2Widget> {
                       ),
                     ),
                   ],
-                ),
+                ).animateOnPageLoad(
+                    animationsMap['columnOnPageLoadAnimation']!),
               ),
               if (!(isWeb
                   ? MediaQuery.viewInsetsOf(context).bottom > 0

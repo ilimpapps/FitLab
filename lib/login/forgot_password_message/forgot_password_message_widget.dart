@@ -1,8 +1,10 @@
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'forgot_password_message_model.dart';
 export 'forgot_password_message_model.dart';
@@ -21,12 +23,14 @@ class ForgotPasswordMessageWidget extends StatefulWidget {
 }
 
 class _ForgotPasswordMessageWidgetState
-    extends State<ForgotPasswordMessageWidget> {
+    extends State<ForgotPasswordMessageWidget> with TickerProviderStateMixin {
   late ForgotPasswordMessageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -41,6 +45,28 @@ class _ForgotPasswordMessageWidgetState
         });
       });
     }
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -126,7 +152,8 @@ class _ForgotPasswordMessageWidgetState
                   ]
                       .addToStart(const SizedBox(height: 54.0))
                       .addToEnd(const SizedBox(height: 128.0)),
-                ),
+                ).animateOnPageLoad(
+                    animationsMap['columnOnPageLoadAnimation']!),
               ),
               Align(
                 alignment: const AlignmentDirectional(0.0, 1.0),

@@ -65,4 +65,5 @@ export '/training_report/training_report_widget.dart' show TrainingReportWidget;
 export '/coach_flow/training_templates/training_templates_edit/training_templates_edit_widget.dart'
     show TrainingTemplatesEditWidget;
 export '/archive/archive_widget.dart' show ArchiveWidget;
-export '/main/training_copy/training_copy_widget.dart' show TrainingCopyWidget;
+export '/trainings_reports_for_coach/trainings_reports_for_coach_widget.dart'
+    show TrainingsReportsForCoachWidget;

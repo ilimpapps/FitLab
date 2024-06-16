@@ -1,6 +1,7 @@
 import '/components/back/back_widget.dart';
 import '/components/choice_chip/choice_chip_widget.dart';
 import '/components/warmup_closed/warmup_closed_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -8,6 +9,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'edit_plan2nd_step_model.dart';
 export 'edit_plan2nd_step_model.dart';
 
@@ -18,15 +20,40 @@ class EditPlan2ndStepWidget extends StatefulWidget {
   State<EditPlan2ndStepWidget> createState() => _EditPlan2ndStepWidgetState();
 }
 
-class _EditPlan2ndStepWidgetState extends State<EditPlan2ndStepWidget> {
+class _EditPlan2ndStepWidgetState extends State<EditPlan2ndStepWidget>
+    with TickerProviderStateMixin {
   late EditPlan2ndStepModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => EditPlan2ndStepModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -335,7 +362,8 @@ class _EditPlan2ndStepWidgetState extends State<EditPlan2ndStepWidget> {
                               ),
                             ].addToEnd(const SizedBox(height: 130.0)),
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
                   ],

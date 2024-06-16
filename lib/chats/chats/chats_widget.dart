@@ -3,6 +3,7 @@ import '/backend/supabase/supabase.dart';
 import '/components/chat_item/chat_item_widget.dart';
 import '/components/empty_chats_for_client/empty_chats_for_client_widget.dart';
 import '/components/nav_bar/nav_bar_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
@@ -10,6 +11,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'chats_model.dart';
 export 'chats_model.dart';
@@ -21,10 +23,13 @@ class ChatsWidget extends StatefulWidget {
   State<ChatsWidget> createState() => _ChatsWidgetState();
 }
 
-class _ChatsWidgetState extends State<ChatsWidget> {
+class _ChatsWidgetState extends State<ChatsWidget>
+    with TickerProviderStateMixin {
   late ChatsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -45,6 +50,28 @@ class _ChatsWidgetState extends State<ChatsWidget> {
           HapticFeedback.mediumImpact();
         },
       );
+    });
+
+    animationsMap.addAll({
+      'stackOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
   }
 
@@ -528,7 +555,8 @@ class _ChatsWidgetState extends State<ChatsWidget> {
                             },
                           ),
                       ],
-                    );
+                    ).animateOnPageLoad(
+                        animationsMap['stackOnPageLoadAnimation']!);
                   },
                 ),
                 Align(

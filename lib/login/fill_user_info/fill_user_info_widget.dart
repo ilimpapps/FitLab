@@ -2,6 +2,7 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
 import '/components/custom_picker/custom_picker_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'fill_user_info_model.dart';
@@ -28,12 +30,15 @@ class FillUserInfoWidget extends StatefulWidget {
   State<FillUserInfoWidget> createState() => _FillUserInfoWidgetState();
 }
 
-class _FillUserInfoWidgetState extends State<FillUserInfoWidget> {
+class _FillUserInfoWidgetState extends State<FillUserInfoWidget>
+    with TickerProviderStateMixin {
   late FillUserInfoModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -66,6 +71,28 @@ class _FillUserInfoWidgetState extends State<FillUserInfoWidget> {
 
     _model.cityInputTextController ??= TextEditingController();
     _model.cityInputFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -99,13 +126,13 @@ class _FillUserInfoWidgetState extends State<FillUserInfoWidget> {
           builder: (context, snapshot) {
             // Customize what your widget looks like when it's loading.
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
+                      Color(0x03E6FC70),
                     ),
                   ),
                 ),
@@ -922,7 +949,7 @@ class _FillUserInfoWidgetState extends State<FillUserInfoWidget> {
                                               ),
                                               autofocus: false,
                                               textCapitalization:
-                                                  TextCapitalization.sentences,
+                                                  TextCapitalization.words,
                                               textInputAction:
                                                   TextInputAction.done,
                                               obscureText: false,
@@ -1015,15 +1042,9 @@ class _FillUserInfoWidgetState extends State<FillUserInfoWidget> {
                                                         useGoogleFonts: false,
                                                         lineHeight: 1.37,
                                                       ),
-                                              keyboardType: TextInputType.name,
                                               validator: _model
                                                   .cityInputTextControllerValidator
                                                   .asValidator(context),
-                                              inputFormatters: [
-                                                FilteringTextInputFormatter
-                                                    .allow(RegExp(
-                                                        '^[a-zA-Zа-яА-Я]{1,12}\$'))
-                                              ],
                                             ),
                                           ),
                                         ),
@@ -1304,7 +1325,8 @@ class _FillUserInfoWidgetState extends State<FillUserInfoWidget> {
                                           ? 12.0
                                           : 50.0)),
                             ),
-                          ),
+                          ).animateOnPageLoad(
+                              animationsMap['columnOnPageLoadAnimation']!),
                         ),
                       ),
                     ].addToStart(const SizedBox(height: 54.0)),

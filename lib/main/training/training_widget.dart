@@ -3,6 +3,7 @@ import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
 import '/components/bottom_training_feedback/bottom_training_feedback_widget.dart';
 import '/components/plan_details_item/plan_details_item_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -13,6 +14,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'training_model.dart';
 export 'training_model.dart';
@@ -33,10 +35,13 @@ class TrainingWidget extends StatefulWidget {
   State<TrainingWidget> createState() => _TrainingWidgetState();
 }
 
-class _TrainingWidgetState extends State<TrainingWidget> {
+class _TrainingWidgetState extends State<TrainingWidget>
+    with TickerProviderStateMixin {
   late TrainingModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -57,6 +62,28 @@ class _TrainingWidgetState extends State<TrainingWidget> {
           HapticFeedback.mediumImpact();
         },
       );
+    });
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
   }
 
@@ -93,13 +120,13 @@ class _TrainingWidgetState extends State<TrainingWidget> {
           builder: (context, snapshot) {
             // Customize what your widget looks like when it's loading.
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
+                      Color(0x03E6FC70),
                     ),
                   ),
                 ),
@@ -132,13 +159,13 @@ class _TrainingWidgetState extends State<TrainingWidget> {
                 builder: (context, snapshot) {
                   // Customize what your widget looks like when it's loading.
                   if (!snapshot.hasData) {
-                    return Center(
+                    return const Center(
                       child: SizedBox(
                         width: 50.0,
                         height: 50.0,
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            FlutterFlowTheme.of(context).primary,
+                            Color(0x03E6FC70),
                           ),
                         ),
                       ),
@@ -164,8 +191,7 @@ class _TrainingWidgetState extends State<TrainingWidget> {
                                   20.0, 0.0, 20.0, 8.0),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   InkWell(
                                     splashColor: Colors.transparent,
@@ -181,117 +207,221 @@ class _TrainingWidgetState extends State<TrainingWidget> {
                                       child: const BackWidget(),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 0.0, 8.0, 0.0),
-                                    child: Text(
-                                      valueOrDefault<String>(
-                                        queryUsersTrainingsUsersTrainingsRow
-                                            ?.name,
-                                        'null',
-                                      ),
-                                      maxLines: 2,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'NTSomic',
-                                            letterSpacing: 0.0,
-                                            useGoogleFonts: false,
+                                  Expanded(
+                                    child: Align(
+                                      alignment:
+                                          const AlignmentDirectional(0.0, -1.0),
+                                      child: Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 8.0, 0.0),
+                                        child: Text(
+                                          valueOrDefault<String>(
+                                            queryUsersTrainingsUsersTrainingsRow
+                                                ?.name,
+                                            'null',
                                           ),
+                                          maxLines: 2,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'NTSomic',
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: false,
+                                              ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  FutureBuilder<List<ChatsRow>>(
-                                    future: ChatsTable().querySingleRow(
-                                      queryFn: (q) => q
-                                          .eq(
-                                            'rl_users',
-                                            currentUserUid,
-                                          )
-                                          .eq(
-                                            'rl_coach',
-                                            queryUsersExercisesUsersTrainingsExercisesRowList
-                                                .first.rlCoach,
-                                          ),
-                                    ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50.0,
-                                            height: 50.0,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
+                                  if (FFAppState().isCoach)
+                                    FutureBuilder<List<ChatsRow>>(
+                                      future: ChatsTable().querySingleRow(
+                                        queryFn: (q) => q
+                                            .eq(
+                                              'rl_users',
+                                              queryUsersTrainingsUsersTrainingsRow
+                                                  ?.rlUsers,
+                                            )
+                                            .eq(
+                                              'rl_coach',
+                                              currentUserUid,
+                                            ),
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return const Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Color(0x03E6FC70),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<ChatsRow> isCoachChatsRowList =
+                                            snapshot.data!;
+                                        final isCoachChatsRow =
+                                            isCoachChatsRowList.isNotEmpty
+                                                ? isCoachChatsRowList.first
+                                                : null;
+                                        return InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed(
+                                              'ChatsMessages',
+                                              queryParameters: {
+                                                'chat': serializeParam(
+                                                  isCoachChatsRow,
+                                                  ParamType.SupabaseRow,
+                                                ),
+                                                'rlUsersTraining':
+                                                    serializeParam(
+                                                  widget.rlUsersTrainings,
+                                                  ParamType.int,
+                                                ),
+                                                'trainingDateTime':
+                                                    serializeParam(
+                                                  widget.dateTime,
+                                                  ParamType.DateTime,
+                                                ),
+                                                'trainingName': serializeParam(
+                                                  valueOrDefault<String>(
+                                                    queryUsersTrainingsUsersTrainingsRow
+                                                        ?.name,
+                                                    'null',
+                                                  ),
+                                                  ParamType.String,
+                                                ),
+                                              }.withoutNulls,
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 56.0,
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondary,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Align(
+                                              alignment: const AlignmentDirectional(
+                                                  0.0, 0.0),
+                                              child: Icon(
+                                                FFIcons.kmessageCircle,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                                size: 24.0,
                                               ),
                                             ),
                                           ),
                                         );
-                                      }
-                                      List<ChatsRow> containerChatsRowList =
-                                          snapshot.data!;
-                                      final containerChatsRow =
-                                          containerChatsRowList.isNotEmpty
-                                              ? containerChatsRowList.first
-                                              : null;
-                                      return InkWell(
-                                        splashColor: Colors.transparent,
-                                        focusColor: Colors.transparent,
-                                        hoverColor: Colors.transparent,
-                                        highlightColor: Colors.transparent,
-                                        onTap: () async {
-                                          context.pushNamed(
-                                            'ChatsMessages',
-                                            queryParameters: {
-                                              'chat': serializeParam(
-                                                containerChatsRow,
-                                                ParamType.SupabaseRow,
-                                              ),
-                                              'rlUsersTraining': serializeParam(
-                                                widget.rlUsersTrainings,
-                                                ParamType.int,
-                                              ),
-                                              'trainingDateTime':
-                                                  serializeParam(
-                                                widget.dateTime,
-                                                ParamType.DateTime,
-                                              ),
-                                              'trainingName': serializeParam(
-                                                valueOrDefault<String>(
-                                                  queryUsersTrainingsUsersTrainingsRow
-                                                      ?.name,
-                                                  'null',
+                                      },
+                                    ),
+                                  if (!FFAppState().isCoach)
+                                    FutureBuilder<List<ChatsRow>>(
+                                      future: ChatsTable().querySingleRow(
+                                        queryFn: (q) => q
+                                            .eq(
+                                              'rl_users',
+                                              currentUserUid,
+                                            )
+                                            .eq(
+                                              'rl_coach',
+                                              queryUsersExercisesUsersTrainingsExercisesRowList
+                                                  .first.rlCoach,
+                                            ),
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return const Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  Color(0x03E6FC70),
                                                 ),
-                                                ParamType.String,
                                               ),
-                                            }.withoutNulls,
+                                            ),
                                           );
-                                        },
-                                        child: Container(
-                                          width: 56.0,
-                                          height: 56.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondary,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Align(
-                                            alignment:
-                                                const AlignmentDirectional(0.0, 0.0),
-                                            child: Icon(
-                                              FFIcons.kmessageCircle,
+                                        }
+                                        List<ChatsRow> isClientChatsRowList =
+                                            snapshot.data!;
+                                        final isClientChatsRow =
+                                            isClientChatsRowList.isNotEmpty
+                                                ? isClientChatsRowList.first
+                                                : null;
+                                        return InkWell(
+                                          splashColor: Colors.transparent,
+                                          focusColor: Colors.transparent,
+                                          hoverColor: Colors.transparent,
+                                          highlightColor: Colors.transparent,
+                                          onTap: () async {
+                                            context.pushNamed(
+                                              'ChatsMessages',
+                                              queryParameters: {
+                                                'chat': serializeParam(
+                                                  isClientChatsRow,
+                                                  ParamType.SupabaseRow,
+                                                ),
+                                                'rlUsersTraining':
+                                                    serializeParam(
+                                                  widget.rlUsersTrainings,
+                                                  ParamType.int,
+                                                ),
+                                                'trainingDateTime':
+                                                    serializeParam(
+                                                  widget.dateTime,
+                                                  ParamType.DateTime,
+                                                ),
+                                                'trainingName': serializeParam(
+                                                  valueOrDefault<String>(
+                                                    queryUsersTrainingsUsersTrainingsRow
+                                                        ?.name,
+                                                    'null',
+                                                  ),
+                                                  ParamType.String,
+                                                ),
+                                              }.withoutNulls,
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 56.0,
+                                            height: 56.0,
+                                            decoration: BoxDecoration(
                                               color:
                                                   FlutterFlowTheme.of(context)
-                                                      .info,
-                                              size: 24.0,
+                                                      .secondary,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Align(
+                                              alignment: const AlignmentDirectional(
+                                                  0.0, 0.0),
+                                              child: Icon(
+                                                FFIcons.kmessageCircle,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .info,
+                                                size: 24.0,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                        );
+                                      },
+                                    ),
                                 ],
                               ),
                             ),
@@ -471,46 +601,47 @@ class _TrainingWidgetState extends State<TrainingWidget> {
                                                     key: Key(
                                                       'Keycdb_${childTrainingItem.id.toString()}',
                                                     ),
-                                                    isCompleted: SetsPlanListStruct
-                                                                .maybeFromMap(
+                                                    isCompleted: widget
+                                                            .isCoachView
+                                                        ? false
+                                                        : (SetsPlanListStruct.maybeFromMap(
                                                                     childTrainingItem
                                                                         .setsPlan)
-                                                            ?.setsPlan
-                                                            .length ==
-                                                        SetsFactListStruct.maybeFromMap(
-                                                                childTrainingItem
-                                                                    .setsFact)
-                                                            ?.setsFact
-                                                            .where((e) =>
-                                                                functions.dateTimeToDate(widget
-                                                                    .dateTime) ==
-                                                                functions.dateTimeToDate(
-                                                                    functions.stringToDateTime(
-                                                                        e.completedDateTime)))
-                                                            .toList()
-                                                            .length,
-                                                    isStartTraining: queryUsersTrainingsUsersTrainingsRow
-                                                                ?.trainingStartDates
+                                                                ?.setsPlan
+                                                                .length ==
+                                                            SetsFactListStruct.maybeFromMap(
+                                                                    childTrainingItem
+                                                                        .setsFact)
+                                                                ?.setsFact
                                                                 .where((e) =>
-                                                                    functions
-                                                                        .dateTimeToDate(
-                                                                            e) ==
                                                                     functions.dateTimeToDate(
                                                                         widget
-                                                                            .dateTime))
-                                                                .toList() !=
-                                                            null &&
-                                                        (queryUsersTrainingsUsersTrainingsRow
-                                                                ?.trainingStartDates
-                                                                .where((e) =>
-                                                                    functions
-                                                                        .dateTimeToDate(
-                                                                            e) ==
+                                                                            .dateTime) ==
                                                                     functions.dateTimeToDate(
-                                                                        widget
+                                                                        functions.stringToDateTime(e.completedDateTime)))
+                                                                .toList()
+                                                                .length),
+                                                    isStartTraining: widget
+                                                            .isCoachView
+                                                        ? false
+                                                        : (queryUsersTrainingsUsersTrainingsRow
+                                                                    ?.trainingStartDates
+                                                                    .where((e) =>
+                                                                        functions.dateTimeToDate(
+                                                                            e) ==
+                                                                        functions.dateTimeToDate(widget
                                                                             .dateTime))
-                                                                .toList())!
-                                                            .isNotEmpty,
+                                                                    .toList() !=
+                                                                null &&
+                                                            (queryUsersTrainingsUsersTrainingsRow
+                                                                    ?.trainingStartDates
+                                                                    .where((e) =>
+                                                                        functions.dateTimeToDate(
+                                                                            e) ==
+                                                                        functions
+                                                                            .dateTimeToDate(widget.dateTime))
+                                                                    .toList())!
+                                                                .isNotEmpty),
                                                     dateTime: widget.dateTime,
                                                     usersTrainingExercisesRow:
                                                         childTrainingItem,
@@ -527,7 +658,8 @@ class _TrainingWidgetState extends State<TrainingWidget> {
                                         .addToStart(const SizedBox(height: 12.0))
                                         .addToEnd(const SizedBox(height: 130.0)),
                                   ),
-                                ),
+                                ).animateOnPageLoad(animationsMap[
+                                    'columnOnPageLoadAnimation']!),
                               ),
                             ),
                           ].addToStart(const SizedBox(height: 54.0)),
@@ -671,6 +803,9 @@ class _TrainingWidgetState extends State<TrainingWidget> {
                                               supaSerialize<DateTime>(
                                                   FFAppState()
                                                       .startTrainingDateTime),
+                                          'rl_coach':
+                                              queryUsersTrainingsUsersTrainingsRow
+                                                  .rlCoach,
                                         });
                                         setState(() =>
                                             _model.requestCompleter2 = null);

@@ -4,10 +4,12 @@ import '/coach_flow/training_templates/training_template_card/training_template_
 import '/components/back/back_widget.dart';
 import '/components/choice_chip/choice_chip_widget.dart';
 import '/components/empty_training_templates_list/empty_training_templates_list_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'training_templates_model.dart';
 export 'training_templates_model.dart';
 
@@ -19,15 +21,40 @@ class TrainingTemplatesWidget extends StatefulWidget {
       _TrainingTemplatesWidgetState();
 }
 
-class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget> {
+class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget>
+    with TickerProviderStateMixin {
   late TrainingTemplatesModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => TrainingTemplatesModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -206,13 +233,13 @@ class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget> {
                           builder: (context, snapshot) {
                             // Customize what your widget looks like when it's loading.
                             if (!snapshot.hasData) {
-                              return Center(
+                              return const Center(
                                 child: SizedBox(
                                   width: 50.0,
                                   height: 50.0,
                                   child: CircularProgressIndicator(
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                      FlutterFlowTheme.of(context).primary,
+                                      Color(0x03E6FC70),
                                     ),
                                   ),
                                 ),
@@ -249,15 +276,14 @@ class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget> {
                                     builder: (context, snapshot) {
                                       // Customize what your widget looks like when it's loading.
                                       if (!snapshot.hasData) {
-                                        return Center(
+                                        return const Center(
                                           child: SizedBox(
                                             width: 50.0,
                                             height: 50.0,
                                             child: CircularProgressIndicator(
                                               valueColor:
                                                   AlwaysStoppedAnimation<Color>(
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
+                                                Color(0x03E6FC70),
                                               ),
                                             ),
                                           ),
@@ -286,7 +312,7 @@ class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget> {
                                           builder: (context, snapshot) {
                                             // Customize what your widget looks like when it's loading.
                                             if (!snapshot.hasData) {
-                                              return Center(
+                                              return const Center(
                                                 child: SizedBox(
                                                   width: 50.0,
                                                   height: 50.0,
@@ -295,9 +321,7 @@ class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget> {
                                                     valueColor:
                                                         AlwaysStoppedAnimation<
                                                             Color>(
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
+                                                      Color(0x03E6FC70),
                                                     ),
                                                   ),
                                                 ),
@@ -351,7 +375,8 @@ class _TrainingTemplatesWidgetState extends State<TrainingTemplatesWidget> {
                       ),
                     ),
                   ],
-                ),
+                ).animateOnPageLoad(
+                    animationsMap['columnOnPageLoadAnimation']!),
               ),
               Align(
                 alignment: const AlignmentDirectional(0.0, 1.0),

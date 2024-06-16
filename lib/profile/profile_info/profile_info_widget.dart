@@ -2,12 +2,15 @@ import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/basic_list_item/basic_list_item_widget.dart';
 import '/components/bottom_log_out/bottom_log_out_widget.dart';
+import '/components/info_under_development/info_under_development_widget.dart';
 import '/components/nav_bar/nav_bar_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'profile_info_model.dart';
 export 'profile_info_model.dart';
@@ -19,15 +22,40 @@ class ProfileInfoWidget extends StatefulWidget {
   State<ProfileInfoWidget> createState() => _ProfileInfoWidgetState();
 }
 
-class _ProfileInfoWidgetState extends State<ProfileInfoWidget> {
+class _ProfileInfoWidgetState extends State<ProfileInfoWidget>
+    with TickerProviderStateMixin {
   late ProfileInfoModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfileInfoModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -71,13 +99,13 @@ class _ProfileInfoWidgetState extends State<ProfileInfoWidget> {
                   builder: (context, snapshot) {
                     // Customize what your widget looks like when it's loading.
                     if (!snapshot.hasData) {
-                      return Center(
+                      return const Center(
                         child: SizedBox(
                           width: 50.0,
                           height: 50.0,
                           child: CircularProgressIndicator(
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              FlutterFlowTheme.of(context).primary,
+                              Color(0x03E6FC70),
                             ),
                           ),
                         ),
@@ -289,27 +317,97 @@ class _ProfileInfoWidgetState extends State<ProfileInfoWidget> {
                                     ),
                                   ),
                                 ),
-                              wrapWithModel(
-                                model: _model.basicListItemModel2,
-                                updateCallback: () => setState(() {}),
-                                child: BasicListItemWidget(
-                                  text: 'Оценить приложение',
-                                  icon: Icon(
-                                    FFIcons.kstar,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
+                              Builder(
+                                builder: (context) => InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return Dialog(
+                                          elevation: 0,
+                                          insetPadding: EdgeInsets.zero,
+                                          backgroundColor: Colors.transparent,
+                                          alignment: const AlignmentDirectional(
+                                                  0.0, 0.0)
+                                              .resolve(
+                                                  Directionality.of(context)),
+                                          child: GestureDetector(
+                                            onTap: () => _model
+                                                    .unfocusNode.canRequestFocus
+                                                ? FocusScope.of(context)
+                                                    .requestFocus(
+                                                        _model.unfocusNode)
+                                                : FocusScope.of(context)
+                                                    .unfocus(),
+                                            child: const InfoUnderDevelopmentWidget(),
+                                          ),
+                                        );
+                                      },
+                                    ).then((value) => setState(() {}));
+                                  },
+                                  child: wrapWithModel(
+                                    model: _model.basicListItemModel2,
+                                    updateCallback: () => setState(() {}),
+                                    child: BasicListItemWidget(
+                                      text: 'Оценить приложение',
+                                      icon: Icon(
+                                        FFIcons.kstar,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        size: 24.0,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                              wrapWithModel(
-                                model: _model.basicListItemModel3,
-                                updateCallback: () => setState(() {}),
-                                child: BasicListItemWidget(
-                                  text: 'Нужна помощь',
-                                  icon: Icon(
-                                    FFIcons.kheadphones,
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    size: 24.0,
+                              Builder(
+                                builder: (context) => InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (dialogContext) {
+                                        return Dialog(
+                                          elevation: 0,
+                                          insetPadding: EdgeInsets.zero,
+                                          backgroundColor: Colors.transparent,
+                                          alignment: const AlignmentDirectional(
+                                                  0.0, 0.0)
+                                              .resolve(
+                                                  Directionality.of(context)),
+                                          child: GestureDetector(
+                                            onTap: () => _model
+                                                    .unfocusNode.canRequestFocus
+                                                ? FocusScope.of(context)
+                                                    .requestFocus(
+                                                        _model.unfocusNode)
+                                                : FocusScope.of(context)
+                                                    .unfocus(),
+                                            child: const InfoUnderDevelopmentWidget(),
+                                          ),
+                                        );
+                                      },
+                                    ).then((value) => setState(() {}));
+                                  },
+                                  child: wrapWithModel(
+                                    model: _model.basicListItemModel3,
+                                    updateCallback: () => setState(() {}),
+                                    child: BasicListItemWidget(
+                                      text: 'Нужна помощь',
+                                      icon: Icon(
+                                        FFIcons.kheadphones,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primary,
+                                        size: 24.0,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -378,7 +476,8 @@ class _ProfileInfoWidgetState extends State<ProfileInfoWidget> {
                               ),
                             ].addToEnd(const SizedBox(height: 130.0)),
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     );
                   },

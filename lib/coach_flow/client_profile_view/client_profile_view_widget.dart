@@ -3,12 +3,14 @@ import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
 import '/components/dialog_coach_action_widget.dart';
 import '/components/empty_training_reports/empty_training_reports_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'client_profile_view_model.dart';
 export 'client_profile_view_model.dart';
 
@@ -25,15 +27,40 @@ class ClientProfileViewWidget extends StatefulWidget {
       _ClientProfileViewWidgetState();
 }
 
-class _ClientProfileViewWidgetState extends State<ClientProfileViewWidget> {
+class _ClientProfileViewWidgetState extends State<ClientProfileViewWidget>
+    with TickerProviderStateMixin {
   late ClientProfileViewModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ClientProfileViewModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -884,7 +911,8 @@ class _ClientProfileViewWidgetState extends State<ClientProfileViewWidget> {
                         ),
                       ].addToEnd(const SizedBox(height: 50.0)),
                     ),
-                  ),
+                  ).animateOnPageLoad(
+                      animationsMap['columnOnPageLoadAnimation']!),
                 ),
               ],
             ),

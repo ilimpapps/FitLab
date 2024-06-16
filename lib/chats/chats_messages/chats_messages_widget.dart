@@ -4,6 +4,7 @@ import '/components/back/back_widget.dart';
 import '/components/bottom_stickers/bottom_stickers_widget.dart';
 import '/components/chats_message_item/chats_message_item_widget.dart';
 import '/components/dialog_chose_media/dialog_chose_media_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'dart:async';
@@ -15,7 +16,9 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:provider/provider.dart';
 import 'chats_messages_model.dart';
 export 'chats_messages_model.dart';
 
@@ -41,12 +44,15 @@ class ChatsMessagesWidget extends StatefulWidget {
   State<ChatsMessagesWidget> createState() => _ChatsMessagesWidgetState();
 }
 
-class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
+class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget>
+    with TickerProviderStateMixin {
   late ChatsMessagesModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -84,6 +90,40 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
 
     _model.messageFieldTextController ??= TextEditingController();
     _model.messageFieldFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 400.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+        ],
+      ),
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -98,6 +138,8 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -115,13 +157,13 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
           builder: (context, snapshot) {
             // Customize what your widget looks like when it's loading.
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
+                      Color(0x03E6FC70),
                     ),
                   ),
                 ),
@@ -143,13 +185,13 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                 builder: (context, snapshot) {
                   // Customize what your widget looks like when it's loading.
                   if (!snapshot.hasData) {
-                    return Center(
+                    return const Center(
                       child: SizedBox(
                         width: 50.0,
                         height: 50.0,
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            FlutterFlowTheme.of(context).primary,
+                            Color(0x03E6FC70),
                           ),
                         ),
                       ),
@@ -171,13 +213,13 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                       builder: (context, snapshot) {
                         // Customize what your widget looks like when it's loading.
                         if (!snapshot.hasData) {
-                          return Center(
+                          return const Center(
                             child: SizedBox(
                               width: 50.0,
                               height: 50.0,
                               child: CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
-                                  FlutterFlowTheme.of(context).primary,
+                                  Color(0x03E6FC70),
                                 ),
                               ),
                             ),
@@ -205,13 +247,13 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                             builder: (context, snapshot) {
                               // Customize what your widget looks like when it's loading.
                               if (!snapshot.hasData) {
-                                return Center(
+                                return const Center(
                                   child: SizedBox(
                                     width: 50.0,
                                     height: 50.0,
                                     child: CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                        FlutterFlowTheme.of(context).primary,
+                                        Color(0x03E6FC70),
                                       ),
                                     ),
                                   ),
@@ -550,8 +592,8 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                                                             avoidOverflow: true,
                                                             targetAnchor:
                                                                 const AlignmentDirectional(
-                                                                        -1.0,
-                                                                        1.0)
+                                                                        1.0,
+                                                                        -1.0)
                                                                     .resolve(
                                                                         Directionality.of(
                                                                             context)),
@@ -989,7 +1031,8 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ).animateOnPageLoad(animationsMap[
+                                        'columnOnPageLoadAnimation']!),
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(0.0),
                                       child: BackdropFilter(
@@ -1038,7 +1081,9 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                                                         const AlignmentDirectional(
                                                             0.0, 0.0),
                                                     child: Text(
-                                                      '${coachQueryUsersRow?.name} ${coachQueryUsersRow?.surname}',
+                                                      FFAppState().isCoach
+                                                          ? '${clientQueryUsersRow?.name} ${clientQueryUsersRow?.surname}'
+                                                          : '${coachQueryUsersRow?.name} ${coachQueryUsersRow?.surname}',
                                                       style: FlutterFlowTheme
                                                               .of(context)
                                                           .labelSmall
@@ -1103,7 +1148,7 @@ class _ChatsMessagesWidgetState extends State<ChatsMessagesWidget> {
                   );
                 },
               ),
-            );
+            ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!);
           },
         ),
       ),

@@ -4,6 +4,7 @@ import '/components/back/back_widget.dart';
 import '/components/bottom_before_after_pfoto/bottom_before_after_pfoto_widget.dart';
 import '/components/dialog_photo_delete/dialog_photo_delete_widget.dart';
 import '/components/empty_photo_list/empty_photo_list_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_expanded_image_view.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -13,6 +14,8 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'diary_photo_model.dart';
 export 'diary_photo_model.dart';
 
@@ -28,15 +31,40 @@ class DiaryPhotoWidget extends StatefulWidget {
   State<DiaryPhotoWidget> createState() => _DiaryPhotoWidgetState();
 }
 
-class _DiaryPhotoWidgetState extends State<DiaryPhotoWidget> {
+class _DiaryPhotoWidgetState extends State<DiaryPhotoWidget>
+    with TickerProviderStateMixin {
   late DiaryPhotoModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => DiaryPhotoModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -48,6 +76,8 @@ class _DiaryPhotoWidgetState extends State<DiaryPhotoWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -60,20 +90,20 @@ class _DiaryPhotoWidgetState extends State<DiaryPhotoWidget> {
             queryFn: (q) => q
                 .eq(
                   'rl_users',
-                  currentUserUid,
+                  widget.rlUser,
                 )
                 .order('created_at', ascending: true),
           ),
           builder: (context, snapshot) {
             // Customize what your widget looks like when it's loading.
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
+                      Color(0x03E6FC70),
                     ),
                   ),
                 ),
@@ -119,99 +149,104 @@ class _DiaryPhotoWidgetState extends State<DiaryPhotoWidget> {
                               child: const BackWidget(),
                             ),
                           ),
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              final selectedMedia =
-                                  await selectMediaWithSourceBottomSheet(
-                                context: context,
-                                storageFolderPath: 'progress',
-                                maxWidth: 600.00,
-                                maxHeight: 600.00,
-                                imageQuality: 92,
-                                allowPhoto: true,
-                              );
-                              if (selectedMedia != null &&
-                                  selectedMedia.every((m) => validateFileFormat(
-                                      m.storagePath, context))) {
-                                setState(() => _model.isDataUploading = true);
-                                var selectedUploadedFiles = <FFUploadedFile>[];
+                          if (!FFAppState().isCoach)
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                final selectedMedia =
+                                    await selectMediaWithSourceBottomSheet(
+                                  context: context,
+                                  storageFolderPath: 'progress',
+                                  maxWidth: 600.00,
+                                  maxHeight: 600.00,
+                                  imageQuality: 92,
+                                  allowPhoto: true,
+                                );
+                                if (selectedMedia != null &&
+                                    selectedMedia.every((m) =>
+                                        validateFileFormat(
+                                            m.storagePath, context))) {
+                                  setState(() => _model.isDataUploading = true);
+                                  var selectedUploadedFiles =
+                                      <FFUploadedFile>[];
 
-                                var downloadUrls = <String>[];
-                                try {
-                                  showUploadMessage(
-                                    context,
-                                    'Файл заргужается',
-                                    showLoading: true,
-                                  );
-                                  selectedUploadedFiles = selectedMedia
-                                      .map((m) => FFUploadedFile(
-                                            name: m.storagePath.split('/').last,
-                                            bytes: m.bytes,
-                                            height: m.dimensions?.height,
-                                            width: m.dimensions?.width,
-                                            blurHash: m.blurHash,
-                                          ))
-                                      .toList();
+                                  var downloadUrls = <String>[];
+                                  try {
+                                    showUploadMessage(
+                                      context,
+                                      'Файл заргужается',
+                                      showLoading: true,
+                                    );
+                                    selectedUploadedFiles = selectedMedia
+                                        .map((m) => FFUploadedFile(
+                                              name:
+                                                  m.storagePath.split('/').last,
+                                              bytes: m.bytes,
+                                              height: m.dimensions?.height,
+                                              width: m.dimensions?.width,
+                                              blurHash: m.blurHash,
+                                            ))
+                                        .toList();
 
-                                  downloadUrls =
-                                      await uploadSupabaseStorageFiles(
-                                    bucketName: 'media',
-                                    selectedFiles: selectedMedia,
-                                  );
-                                } finally {
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
-                                  _model.isDataUploading = false;
+                                    downloadUrls =
+                                        await uploadSupabaseStorageFiles(
+                                      bucketName: 'media',
+                                      selectedFiles: selectedMedia,
+                                    );
+                                  } finally {
+                                    ScaffoldMessenger.of(context)
+                                        .hideCurrentSnackBar();
+                                    _model.isDataUploading = false;
+                                  }
+                                  if (selectedUploadedFiles.length ==
+                                          selectedMedia.length &&
+                                      downloadUrls.length ==
+                                          selectedMedia.length) {
+                                    setState(() {
+                                      _model.uploadedLocalFile =
+                                          selectedUploadedFiles.first;
+                                      _model.uploadedFileUrl =
+                                          downloadUrls.first;
+                                    });
+                                    showUploadMessage(context, 'Успешно!');
+                                  } else {
+                                    setState(() {});
+                                    showUploadMessage(
+                                        context, 'Ошибка загрузки данных');
+                                    return;
+                                  }
                                 }
-                                if (selectedUploadedFiles.length ==
-                                        selectedMedia.length &&
-                                    downloadUrls.length ==
-                                        selectedMedia.length) {
-                                  setState(() {
-                                    _model.uploadedLocalFile =
-                                        selectedUploadedFiles.first;
-                                    _model.uploadedFileUrl = downloadUrls.first;
+
+                                if (_model.uploadedFileUrl != '') {
+                                  await PhotoProgressTable().insert({
+                                    'image_path': _model.uploadedFileUrl,
+                                    'rl_users': currentUserUid,
                                   });
-                                  showUploadMessage(context, 'Успешно!');
-                                } else {
-                                  setState(() {});
-                                  showUploadMessage(
-                                      context, 'Ошибка загрузки данных');
-                                  return;
                                 }
-                              }
 
-                              if (_model.uploadedFileUrl != '') {
-                                await PhotoProgressTable().insert({
-                                  'image_path': _model.uploadedFileUrl,
-                                  'rl_users': currentUserUid,
-                                });
-                              }
-
-                              setState(() {});
-                            },
-                            child: Container(
-                              width: 56.0,
-                              height: 56.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context).primary,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Align(
-                                alignment: const AlignmentDirectional(0.0, 0.0),
-                                child: Icon(
-                                  Icons.add_rounded,
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
-                                  size: 24.0,
+                                setState(() {});
+                              },
+                              child: Container(
+                                width: 56.0,
+                                height: 56.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Align(
+                                  alignment: const AlignmentDirectional(0.0, 0.0),
+                                  child: Icon(
+                                    Icons.add_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    size: 24.0,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -1050,7 +1085,8 @@ class _DiaryPhotoWidgetState extends State<DiaryPhotoWidget> {
                                 ),
                             ].addToEnd(const SizedBox(height: 50.0)),
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
                   ],

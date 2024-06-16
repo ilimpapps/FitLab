@@ -1,6 +1,7 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -8,7 +9,9 @@ import 'dart:async';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'registration_model.dart';
 export 'registration_model.dart';
 
@@ -19,12 +22,15 @@ class RegistrationWidget extends StatefulWidget {
   State<RegistrationWidget> createState() => _RegistrationWidgetState();
 }
 
-class _RegistrationWidgetState extends State<RegistrationWidget> {
+class _RegistrationWidgetState extends State<RegistrationWidget>
+    with TickerProviderStateMixin {
   late RegistrationModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -45,6 +51,28 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
 
     _model.passwordInputTextController ??= TextEditingController();
     _model.passwordInputFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -122,7 +150,16 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                               if (Navigator.of(context).canPop()) {
                                 context.pop();
                               }
-                              context.pushNamed('Login');
+                              context.pushNamed(
+                                'Login',
+                                extra: <String, dynamic>{
+                                  kTransitionInfoKey: const TransitionInfo(
+                                    hasTransition: true,
+                                    transitionType: PageTransitionType.fade,
+                                    duration: Duration(milliseconds: 0),
+                                  ),
+                                },
+                              );
                             },
                             child: Container(
                               decoration: const BoxDecoration(),
@@ -427,11 +464,65 @@ class _RegistrationWidgetState extends State<RegistrationWidget> {
                                 ),
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 32.0, 0.0, 0.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0x04FFFFFF),
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  border: Border.all(
+                                    color: const Color(0x0EFDFDFD),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      FaIcon(
+                                        FontAwesomeIcons.info,
+                                        color: FlutterFlowTheme.of(context)
+                                            .accent3,
+                                        size: 24.0,
+                                      ),
+                                      Flexible(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  16.0, 0.0, 0.0, 0.0),
+                                          child: SelectionArea(
+                                              child: Text(
+                                            'Вместо регистрации новых аккаунтов вы можете использовать тестовые акканты для входа. Для этого нажмите \"Уже есть аккаунт?\" или вернитесь назад и нажмите кнопку \"Войти\"',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyLarge
+                                                .override(
+                                                  fontFamily: 'NTSomic',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .accent3,
+                                                  fontSize: 14.0,
+                                                  letterSpacing: 0.0,
+                                                  useGoogleFonts: false,
+                                                  lineHeight: 1.37,
+                                                ),
+                                          )),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ]
                               .addToStart(const SizedBox(height: 12.0))
                               .addToEnd(const SizedBox(height: 116.0)),
                         ),
-                      ),
+                      ).animateOnPageLoad(
+                          animationsMap['columnOnPageLoadAnimation']!),
                     ),
                   ),
                 ].addToStart(const SizedBox(height: 54.0)),

@@ -71,13 +71,13 @@ class _BottomExercisesAddWidgetState extends State<BottomExercisesAddWidget> {
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
-          return Center(
+          return const Center(
             child: SizedBox(
               width: 50.0,
               height: 50.0,
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  FlutterFlowTheme.of(context).primary,
+                  Color(0x03E6FC70),
                 ),
               ),
             ),
@@ -161,7 +161,7 @@ class _BottomExercisesAddWidgetState extends State<BottomExercisesAddWidget> {
                         focusNode: _model.textFieldFocusNode,
                         onChanged: (_) => EasyDebounce.debounce(
                           '_model.textController',
-                          const Duration(milliseconds: 200),
+                          const Duration(milliseconds: 50),
                           () => setState(() {}),
                         ),
                         autofocus: false,
@@ -275,10 +275,13 @@ class _BottomExercisesAddWidgetState extends State<BottomExercisesAddWidget> {
                         child: Builder(
                           builder: (context) {
                             final exercieses = queryExercisesExercisesRowList
-                                .where((e) => valueOrDefault<bool>(
+                                .where((e) =>
+                                    valueOrDefault<bool>(
                                       e.muscle.contains(_model.muscle),
                                       false,
-                                    ))
+                                    ) &&
+                                    functions.searchStringInList(
+                                        e.name!, _model.textController.text))
                                 .toList();
                             return SingleChildScrollView(
                               child: Column(

@@ -3,6 +3,7 @@ import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
 import '/components/bottom_delete_account/bottom_delete_account_widget.dart';
 import '/components/custom_picker/custom_picker_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -15,6 +16,7 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:provider/provider.dart';
 import 'profile_edit_model.dart';
@@ -27,12 +29,15 @@ class ProfileEditWidget extends StatefulWidget {
   State<ProfileEditWidget> createState() => _ProfileEditWidgetState();
 }
 
-class _ProfileEditWidgetState extends State<ProfileEditWidget> {
+class _ProfileEditWidgetState extends State<ProfileEditWidget>
+    with TickerProviderStateMixin {
   late ProfileEditModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -80,6 +85,28 @@ class _ProfileEditWidgetState extends State<ProfileEditWidget> {
     _model.phoneFocusNode ??= FocusNode();
 
     _model.cityFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -113,13 +140,13 @@ class _ProfileEditWidgetState extends State<ProfileEditWidget> {
           builder: (context, snapshot) {
             // Customize what your widget looks like when it's loading.
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
+                      Color(0x03E6FC70),
                     ),
                   ),
                 ),
@@ -985,6 +1012,8 @@ class _ProfileEditWidgetState extends State<ProfileEditWidget> {
                                             () => setState(() {}),
                                           ),
                                           autofocus: false,
+                                          textCapitalization:
+                                              TextCapitalization.words,
                                           obscureText: false,
                                           decoration: InputDecoration(
                                             labelText: 'Город',
@@ -1067,7 +1096,6 @@ class _ProfileEditWidgetState extends State<ProfileEditWidget> {
                                                 useGoogleFonts: false,
                                                 lineHeight: 1.37,
                                               ),
-                                          keyboardType: TextInputType.name,
                                           validator: _model
                                               .cityTextControllerValidator
                                               .asValidator(context),
@@ -1323,7 +1351,8 @@ class _ProfileEditWidgetState extends State<ProfileEditWidget> {
                               ),
                             ],
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
                   ],

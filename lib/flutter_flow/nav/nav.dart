@@ -474,20 +474,12 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const ArchiveWidget(),
         ),
         FFRoute(
-          name: 'TrainingCopy',
-          path: '/trainingCopy',
-          builder: (context, params) => TrainingCopyWidget(
-            rlUsersTrainings: params.getParam(
-              'rlUsersTrainings',
-              ParamType.int,
-            ),
-            isCoachView: params.getParam(
-              'isCoachView',
-              ParamType.bool,
-            ),
-            dateTime: params.getParam(
-              'dateTime',
-              ParamType.DateTime,
+          name: 'TrainingsReportsForCoach',
+          path: '/trainingsReportsForCoach',
+          builder: (context, params) => TrainingsReportsForCoachWidget(
+            rlClient: params.getParam(
+              'rlClient',
+              ParamType.String,
             ),
           ),
         )

@@ -107,23 +107,32 @@ class _MeasurementItemWidgetState extends State<MeasurementItemWidget> {
                             ],
                           ),
                           Text(
-                            'Прошлое значение: ${MeasurementsTemplateStruct.maybeFromMap(widget.usersMeasurementsRow!.measurements!)!.measurements.length > 1 ? valueOrDefault<String>(
-                                (MeasurementsTemplateStruct.maybeFromMap(
-                                                widget.usersMeasurementsRow
-                                                    ?.measurements)
-                                            ?.measurements[
-                                        MeasurementsTemplateStruct.maybeFromMap(
-                                                        widget
-                                                            .usersMeasurementsRow!
-                                                            .measurements!)!
-                                                    .measurements
-                                                    .length -
-                                                2 ??
-                                            0])
-                                    ?.value
-                                    .toString(),
-                                'null',
-                              ) : ' -/-'}',
+                            'Прошлое значение: ${valueOrDefault<String>(
+                              MeasurementsTemplateStruct.maybeFromMap(widget
+                                              .usersMeasurementsRow!
+                                              .measurements!)!
+                                          .measurements
+                                          .length >
+                                      1
+                                  ? valueOrDefault<String>(
+                                      (MeasurementsTemplateStruct.maybeFromMap(
+                                                  widget.usersMeasurementsRow
+                                                      ?.measurements)
+                                              ?.measurements[MeasurementsTemplateStruct
+                                                          .maybeFromMap(widget
+                                                              .usersMeasurementsRow!
+                                                              .measurements!)!
+                                                      .measurements
+                                                      .length -
+                                                  2 ??
+                                              0])
+                                          ?.value
+                                          .toString(),
+                                      'null',
+                                    )
+                                  : ' -/-',
+                              ' -/-',
+                            )}',
                             style: FlutterFlowTheme.of(context)
                                 .bodySmall
                                 .override(

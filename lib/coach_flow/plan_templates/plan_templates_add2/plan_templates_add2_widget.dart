@@ -1,6 +1,7 @@
 import '/coach_flow/plan_templates/bottom_chose_training_for_plan/bottom_chose_training_for_plan_widget.dart';
 import '/components/back/back_widget.dart';
 import '/components/choice_chip/choice_chip_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -8,6 +9,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:smooth_page_indicator/smooth_page_indicator.dart'
     as smooth_page_indicator;
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'plan_templates_add2_model.dart';
 export 'plan_templates_add2_model.dart';
 
@@ -30,15 +32,40 @@ class PlanTemplatesAdd2Widget extends StatefulWidget {
       _PlanTemplatesAdd2WidgetState();
 }
 
-class _PlanTemplatesAdd2WidgetState extends State<PlanTemplatesAdd2Widget> {
+class _PlanTemplatesAdd2WidgetState extends State<PlanTemplatesAdd2Widget>
+    with TickerProviderStateMixin {
   late PlanTemplatesAdd2Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => PlanTemplatesAdd2Model());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -751,7 +778,8 @@ class _PlanTemplatesAdd2WidgetState extends State<PlanTemplatesAdd2Widget> {
                           ),
                         ),
                       ].addToEnd(const SizedBox(height: 130.0)),
-                    ),
+                    ).animateOnPageLoad(
+                        animationsMap['columnOnPageLoadAnimation']!),
                   ),
                 ),
               ],

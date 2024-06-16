@@ -1,15 +1,20 @@
 import '/auth/supabase_auth/auth_util.dart';
+import '/backend/schema/structs/index.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'dart:async';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'my_progress_add_model.dart';
 export 'my_progress_add_model.dart';
 
@@ -25,27 +30,66 @@ class MyProgressAddWidget extends StatefulWidget {
   State<MyProgressAddWidget> createState() => _MyProgressAddWidgetState();
 }
 
-class _MyProgressAddWidgetState extends State<MyProgressAddWidget> {
+class _MyProgressAddWidgetState extends State<MyProgressAddWidget>
+    with TickerProviderStateMixin {
   late MyProgressAddModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  late StreamSubscription<bool> _keyboardVisibilitySubscription;
+  bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => MyProgressAddModel());
 
+    if (!isWeb) {
+      _keyboardVisibilitySubscription =
+          KeyboardVisibilityController().onChange.listen((bool visible) {
+        setState(() {
+          _isKeyboardVisible = visible;
+        });
+      });
+    }
+
     _model.nameInputTextController ??= TextEditingController();
     _model.nameInputFocusNode ??= FocusNode();
 
     _model.valueInputTextController ??= TextEditingController();
     _model.valueInputFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
   void dispose() {
     _model.dispose();
 
+    if (!isWeb) {
+      _keyboardVisibilitySubscription.cancel();
+    }
     super.dispose();
   }
 
@@ -68,13 +112,13 @@ class _MyProgressAddWidgetState extends State<MyProgressAddWidget> {
           builder: (context, snapshot) {
             // Customize what your widget looks like when it's loading.
             if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: SizedBox(
                   width: 50.0,
                   height: 50.0,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      FlutterFlowTheme.of(context).primary,
+                      Color(0x03E6FC70),
                     ),
                   ),
                 ),
@@ -400,20 +444,8 @@ class _MyProgressAddWidgetState extends State<MyProgressAddWidget> {
                                           'мин',
                                           'сек'
                                         ],
-                                        onChanged: (val) async {
-                                          setState(() =>
-                                              _model.unitDropDownValue = val);
-                                          _model.updateMeasurementStruct(
-                                            (e) => e
-                                              ..value = double.tryParse(_model
-                                                  .valueInputTextController
-                                                  .text)
-                                              ..createdAt =
-                                                  functions.dateTimeToString(
-                                                      getCurrentTimestamp),
-                                          );
-                                          setState(() {});
-                                        },
+                                        onChanged: (val) => setState(() =>
+                                            _model.unitDropDownValue = val),
                                         width: double.infinity,
                                         height: 60.0,
                                         textStyle: FlutterFlowTheme.of(context)
@@ -467,7 +499,8 @@ class _MyProgressAddWidgetState extends State<MyProgressAddWidget> {
                                       .addToStart(const SizedBox(height: 20.0))
                                       .addToEnd(const SizedBox(height: 50.0)),
                                 ),
-                              ),
+                              ).animateOnPageLoad(
+                                  animationsMap['columnOnPageLoadAnimation']!),
                             ),
                           ),
                         ],
@@ -477,8 +510,19 @@ class _MyProgressAddWidgetState extends State<MyProgressAddWidget> {
                   Align(
                     alignment: const AlignmentDirectional(0.0, 1.0),
                     child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 50.0),
+                      padding: EdgeInsetsDirectional.fromSTEB(
+                          20.0,
+                          0.0,
+                          20.0,
+                          valueOrDefault<double>(
+                            (isWeb
+                                    ? MediaQuery.viewInsetsOf(context).bottom >
+                                        0
+                                    : _isKeyboardVisible)
+                                ? 8.0
+                                : 50.0,
+                            0.0,
+                          )),
                       child: FFButtonWidget(
                         onPressed: ((_model.nameInputTextController.text ==
                                         '') ||
@@ -487,6 +531,19 @@ class _MyProgressAddWidgetState extends State<MyProgressAddWidget> {
                                 (_model.valueInputTextController.text == ''))
                             ? null
                             : () async {
+                                _model.measurements = MeasurementsStruct(
+                                  createdAt: functions
+                                      .dateTimeToString(getCurrentTimestamp),
+                                  value: functions.stringToDouble(
+                                      _model.valueInputTextController.text),
+                                );
+                                _model.addToMeasurementsList(
+                                    _model.measurements!);
+                                _model.measurementsTemplate =
+                                    MeasurementsTemplateStruct(
+                                  measurements: _model.measurementsList,
+                                );
+                                setState(() {});
                                 await UsersMeasurementsTable().insert({
                                   'name': _model.nameInputTextController.text,
                                   'rl_users': currentUserUid,
