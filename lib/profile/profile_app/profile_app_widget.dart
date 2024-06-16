@@ -1,7 +1,10 @@
 import '/components/back/back_widget.dart';
+import '/components/info_under_development/info_under_development_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'profile_app_model.dart';
 export 'profile_app_model.dart';
@@ -13,15 +16,40 @@ class ProfileAppWidget extends StatefulWidget {
   State<ProfileAppWidget> createState() => _ProfileAppWidgetState();
 }
 
-class _ProfileAppWidgetState extends State<ProfileAppWidget> {
+class _ProfileAppWidgetState extends State<ProfileAppWidget>
+    with TickerProviderStateMixin {
   late ProfileAppModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ProfileAppModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -135,83 +163,111 @@ class _ProfileAppWidgetState extends State<ProfileAppWidget> {
                         ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                  child: Container(
-                    decoration: const BoxDecoration(),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 6.0, 0.0, 6.0),
-                      child: Text(
-                        'Политика обработки персональных данных',
-                        style: FlutterFlowTheme.of(context).bodyLarge.override(
-                              fontFamily: 'NTSomic',
-                              color: FlutterFlowTheme.of(context).primary,
-                              letterSpacing: 0.0,
-                              useGoogleFonts: false,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-                  child: Container(
-                    decoration: const BoxDecoration(),
-                    child: Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 6.0, 0.0, 6.0),
-                      child: Text(
-                        'Пользовательское соглашение',
-                        style: FlutterFlowTheme.of(context).bodyLarge.override(
-                              fontFamily: 'NTSomic',
-                              color: FlutterFlowTheme.of(context).primary,
-                              letterSpacing: 0.0,
-                              useGoogleFonts: false,
-                            ),
-                      ),
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                Align(
-                  alignment: const AlignmentDirectional(0.0, 0.0),
-                  child: Text(
-                    'Разработано в',
-                    style: FlutterFlowTheme.of(context).bodyLarge.override(
-                          fontFamily: 'NTSomic',
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                          letterSpacing: 0.0,
-                          useGoogleFonts: false,
-                        ),
-                  ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(0.0, 1.0),
-                  child: Padding(
+                Builder(
+                  builder: (context) => Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 50.0),
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
                     child: InkWell(
                       splashColor: Colors.transparent,
                       focusColor: Colors.transparent,
                       hoverColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onTap: () async {
-                        await launchURL('https://appfyl.com/ru');
+                        await showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            return Dialog(
+                              elevation: 0,
+                              insetPadding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              alignment: const AlignmentDirectional(0.0, 0.0)
+                                  .resolve(Directionality.of(context)),
+                              child: GestureDetector(
+                                onTap: () => _model.unfocusNode.canRequestFocus
+                                    ? FocusScope.of(context)
+                                        .requestFocus(_model.unfocusNode)
+                                    : FocusScope.of(context).unfocus(),
+                                child: const InfoUnderDevelopmentWidget(),
+                              ),
+                            );
+                          },
+                        ).then((value) => setState(() {}));
                       },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(0.0),
-                        child: Image.asset(
-                          'assets/images/LogoM.png',
-                          width: 200.0,
-                          fit: BoxFit.contain,
+                      child: Container(
+                        decoration: const BoxDecoration(),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 6.0, 0.0, 6.0),
+                          child: Text(
+                            'Политика обработки персональных данных',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyLarge
+                                .override(
+                                  fontFamily: 'NTSomic',
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  letterSpacing: 0.0,
+                                  useGoogleFonts: false,
+                                ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
+                Builder(
+                  builder: (context) => Padding(
+                    padding:
+                        const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (dialogContext) {
+                            return Dialog(
+                              elevation: 0,
+                              insetPadding: EdgeInsets.zero,
+                              backgroundColor: Colors.transparent,
+                              alignment: const AlignmentDirectional(0.0, 0.0)
+                                  .resolve(Directionality.of(context)),
+                              child: GestureDetector(
+                                onTap: () => _model.unfocusNode.canRequestFocus
+                                    ? FocusScope.of(context)
+                                        .requestFocus(_model.unfocusNode)
+                                    : FocusScope.of(context).unfocus(),
+                                child: const InfoUnderDevelopmentWidget(),
+                              ),
+                            );
+                          },
+                        ).then((value) => setState(() {}));
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 6.0, 0.0, 6.0),
+                          child: Text(
+                            'Пользовательское соглашение',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyLarge
+                                .override(
+                                  fontFamily: 'NTSomic',
+                                  color: FlutterFlowTheme.of(context).primary,
+                                  letterSpacing: 0.0,
+                                  useGoogleFonts: false,
+                                ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
               ],
-            ),
+            ).animateOnPageLoad(animationsMap['columnOnPageLoadAnimation']!),
           ),
         ),
       ),

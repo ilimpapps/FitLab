@@ -49,4 +49,7 @@ class PassedTrainingsRow extends SupabaseDataRow {
   DateTime? get startTraining => getField<DateTime>('start_training');
   set startTraining(DateTime? value) =>
       setField<DateTime>('start_training', value);
+
+  String? get rlCoach => getField<String>('rl_coach');
+  set rlCoach(String? value) => setField<String>('rl_coach', value);
 }

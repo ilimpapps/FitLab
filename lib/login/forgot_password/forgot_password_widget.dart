@@ -1,11 +1,13 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:async';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'forgot_password_model.dart';
 export 'forgot_password_model.dart';
@@ -17,12 +19,15 @@ class ForgotPasswordWidget extends StatefulWidget {
   State<ForgotPasswordWidget> createState() => _ForgotPasswordWidgetState();
 }
 
-class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
+class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget>
+    with TickerProviderStateMixin {
   late ForgotPasswordModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -40,6 +45,28 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
 
     _model.emailInputTextController ??= TextEditingController();
     _model.emailInputFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -96,21 +123,6 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
                             model: _model.backModel,
                             updateCallback: () => setState(() {}),
                             child: const BackWidget(),
-                          ),
-                        ),
-                        Align(
-                          alignment: const AlignmentDirectional(0.0, 0.0),
-                          child: Text(
-                            'Еще нет аккаунта?',
-                            style: FlutterFlowTheme.of(context)
-                                .bodyMedium
-                                .override(
-                                  fontFamily: 'NTSomic',
-                                  color: FlutterFlowTheme.of(context).primary,
-                                  letterSpacing: 0.0,
-                                  useGoogleFonts: false,
-                                  lineHeight: 1.28,
-                                ),
                           ),
                         ),
                       ],
@@ -246,7 +258,8 @@ class _ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
                             ),
                           ].addToStart(const SizedBox(height: 12.0)),
                         ),
-                      ),
+                      ).animateOnPageLoad(
+                          animationsMap['columnOnPageLoadAnimation']!),
                     ),
                   ),
                 ].addToStart(const SizedBox(height: 54.0)),

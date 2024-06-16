@@ -1,4 +1,5 @@
 import '/backend/supabase/supabase.dart';
+import '/components/info_under_development/info_under_development_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -59,13 +60,13 @@ class _DialogCoachActionWidgetState extends State<DialogCoachActionWidget> {
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
-          return Center(
+          return const Center(
             child: SizedBox(
               width: 50.0,
               height: 50.0,
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  FlutterFlowTheme.of(context).primary,
+                  Color(0x03E6FC70),
                 ),
               ),
             ),
@@ -138,32 +139,56 @@ class _DialogCoachActionWidgetState extends State<DialogCoachActionWidget> {
                     color: FlutterFlowTheme.of(context).divider,
                   ),
                 ),
-                Container(
-                  decoration: const BoxDecoration(),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 13.0, 16.0, 13.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Завершить работу',
-                          style:
-                              FlutterFlowTheme.of(context).bodyLarge.override(
+                Builder(
+                  builder: (context) => InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return Dialog(
+                            elevation: 0,
+                            insetPadding: EdgeInsets.zero,
+                            backgroundColor: Colors.transparent,
+                            alignment: const AlignmentDirectional(0.0, 0.0)
+                                .resolve(Directionality.of(context)),
+                            child: const InfoUnderDevelopmentWidget(),
+                          );
+                        },
+                      ).then((value) => setState(() {}));
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            16.0, 13.0, 16.0, 13.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Завершить работу',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyLarge
+                                  .override(
                                     fontFamily: 'NTSomic',
                                     color: FlutterFlowTheme.of(context).error,
                                     letterSpacing: 0.0,
                                     useGoogleFonts: false,
                                     lineHeight: 1.37,
                                   ),
+                            ),
+                            Icon(
+                              FFIcons.ktrashCan,
+                              color: FlutterFlowTheme.of(context).error,
+                              size: 24.0,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          FFIcons.ktrashCan,
-                          color: FlutterFlowTheme.of(context).error,
-                          size: 24.0,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -174,32 +199,56 @@ class _DialogCoachActionWidgetState extends State<DialogCoachActionWidget> {
                     color: FlutterFlowTheme.of(context).divider,
                   ),
                 ),
-                Container(
-                  decoration: const BoxDecoration(),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 13.0, 16.0, 13.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Пожаловаться',
-                          style:
-                              FlutterFlowTheme.of(context).bodyLarge.override(
+                Builder(
+                  builder: (context) => InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (dialogContext) {
+                          return Dialog(
+                            elevation: 0,
+                            insetPadding: EdgeInsets.zero,
+                            backgroundColor: Colors.transparent,
+                            alignment: const AlignmentDirectional(0.0, 0.0)
+                                .resolve(Directionality.of(context)),
+                            child: const InfoUnderDevelopmentWidget(),
+                          );
+                        },
+                      ).then((value) => setState(() {}));
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(),
+                      child: Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            16.0, 13.0, 16.0, 13.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Пожаловаться',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyLarge
+                                  .override(
                                     fontFamily: 'NTSomic',
                                     color: FlutterFlowTheme.of(context).error,
                                     letterSpacing: 0.0,
                                     useGoogleFonts: false,
                                     lineHeight: 1.37,
                                   ),
+                            ),
+                            Icon(
+                              Icons.twenty_four_mp_sharp,
+                              color: FlutterFlowTheme.of(context).error,
+                              size: 24.0,
+                            ),
+                          ],
                         ),
-                        Icon(
-                          Icons.twenty_four_mp_sharp,
-                          color: FlutterFlowTheme.of(context).error,
-                          size: 24.0,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

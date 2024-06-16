@@ -1,9 +1,11 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/choice_chip/choice_chip_widget.dart';
+import '/components/empty_passed_training_list/empty_passed_training_list_widget.dart';
 import '/components/empty_training_list/empty_training_list_widget.dart';
 import '/components/nav_bar/nav_bar_widget.dart';
 import '/components/training_card_client/training_card_client_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -12,6 +14,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 import 'home_model.dart';
 export 'home_model.dart';
@@ -23,10 +26,12 @@ class HomeWidget extends StatefulWidget {
   State<HomeWidget> createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomeWidgetState extends State<HomeWidget> with TickerProviderStateMixin {
   late HomeModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -55,6 +60,105 @@ class _HomeWidgetState extends State<HomeWidget> {
           _model.queryUsers?.first.name != '')) {
         context.goNamed('FillUserInfo');
       }
+    });
+
+    animationsMap.addAll({
+      'conditionalBuilderOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          VisibilityEffect(duration: 1.ms),
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 800.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 800.0.ms,
+            begin: const Offset(0.8, 0.8),
+            end: const Offset(1.0, 1.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 800.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 800.0.ms,
+            begin: const Offset(0.8, 0.8),
+            end: const Offset(1.0, 1.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation3': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 600.0.ms,
+            duration: 800.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 800.0.ms,
+            begin: const Offset(0.8, 0.8),
+            end: const Offset(1.0, 1.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation4': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 800.0.ms,
+            duration: 800.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          ScaleEffect(
+            curve: Curves.easeInOut,
+            delay: 200.0.ms,
+            duration: 800.0.ms,
+            begin: const Offset(0.8, 0.8),
+            end: const Offset(1.0, 1.0),
+          ),
+        ],
+      ),
     });
   }
 
@@ -104,13 +208,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                         builder: (context, snapshot) {
                           // Customize what your widget looks like when it's loading.
                           if (!snapshot.hasData) {
-                            return Center(
+                            return const Center(
                               child: SizedBox(
                                 width: 50.0,
                                 height: 50.0,
                                 child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                    FlutterFlowTheme.of(context).primary,
+                                    Color(0x03E6FC70),
                                   ),
                                 ),
                               ),
@@ -314,10 +418,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   highlightColor:
                                                       Colors.transparent,
                                                   onTap: () async {
-                                                    if (datesIndex < 10) {
-                                                      return;
-                                                    }
-
                                                     _model.pickedDate =
                                                         datesItem;
                                                     _model.pickedWeekday =
@@ -561,242 +661,531 @@ class _HomeWidgetState extends State<HomeWidget> {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsetsDirectional.fromSTEB(
-                                          20.0, 20.0, 20.0, 0.0),
-                                      child: Builder(
-                                        builder: (context) {
-                                          final childUsersTrainings = queryViewUsersTrainingsViewUsersTrainingsRowList
-                                              .where((e) =>
-                                                  (e.weekday == _model.pickedWeekday) &&
-                                                  (e.endDate! >
-                                                      getCurrentTimestamp) &&
-                                                  (_model.pickedTraining ==
-                                                          'Запланированные'
-                                                      ? !(e.trainingEndDates
-                                                          .where((e) =>
-                                                              functions.dateTimeToDate(e) ==
-                                                              functions.dateTimeToDate(
-                                                                  _model
-                                                                      .pickedDate))
-                                                          .toList()
-                                                          .isNotEmpty)
-                                                      : (e.trainingEndDates
-                                                          .where((e) =>
-                                                              functions.dateTimeToDate(e) ==
-                                                              functions.dateTimeToDate(
-                                                                  _model.pickedDate))
-                                                          .toList()
-                                                          .isNotEmpty)))
-                                              .toList();
-                                          if (childUsersTrainings.isEmpty) {
-                                            return const SizedBox(
-                                              width: double.infinity,
-                                              child: EmptyTrainingListWidget(),
-                                            );
-                                          }
-                                          return Column(
-                                            mainAxisSize: MainAxisSize.max,
-                                            children: List.generate(
-                                                childUsersTrainings.length,
-                                                (childUsersTrainingsIndex) {
-                                              final childUsersTrainingsItem =
-                                                  childUsersTrainings[
-                                                      childUsersTrainingsIndex];
-                                              return InkWell(
-                                                splashColor: Colors.transparent,
-                                                focusColor: Colors.transparent,
-                                                hoverColor: Colors.transparent,
-                                                highlightColor:
-                                                    Colors.transparent,
-                                                onTap: () async {
-                                                  context.pushNamed(
-                                                    'Training',
-                                                    queryParameters: {
-                                                      'rlUsersTrainings':
-                                                          serializeParam(
-                                                        childUsersTrainingsItem
-                                                            .id,
-                                                        ParamType.int,
+                                    if (_model.pickedTraining ==
+                                        'Запланированные')
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            20.0, 20.0, 20.0, 0.0),
+                                        child: Builder(
+                                          builder: (context) {
+                                            final childUsersTrainings = queryViewUsersTrainingsViewUsersTrainingsRowList
+                                                .where((e) =>
+                                                    (e.weekday ==
+                                                        _model.pickedWeekday) &&
+                                                    (e.endDate! >
+                                                        getCurrentTimestamp) &&
+                                                    (_model.pickedTraining ==
+                                                            'Запланированные'
+                                                        ? !(e.trainingEndDates
+                                                            .where((e) =>
+                                                                functions.dateTimeToDate(e) ==
+                                                                functions.dateTimeToDate(_model
+                                                                    .pickedDate))
+                                                            .toList()
+                                                            .isNotEmpty)
+                                                        : (e.trainingEndDates
+                                                            .where((e) =>
+                                                                functions.dateTimeToDate(e) ==
+                                                                functions
+                                                                    .dateTimeToDate(_model.pickedDate))
+                                                            .toList()
+                                                            .isNotEmpty)))
+                                                .toList();
+                                            if (childUsersTrainings.isEmpty) {
+                                              return const SizedBox(
+                                                width: double.infinity,
+                                                child:
+                                                    EmptyTrainingListWidget(),
+                                              );
+                                            }
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.max,
+                                              children: List.generate(
+                                                  childUsersTrainings.length,
+                                                  (childUsersTrainingsIndex) {
+                                                final childUsersTrainingsItem =
+                                                    childUsersTrainings[
+                                                        childUsersTrainingsIndex];
+                                                return Visibility(
+                                                  visible: _model.pickedDate! >=
+                                                      functions.startOfDay(
+                                                          getCurrentTimestamp),
+                                                  child: InkWell(
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    focusColor:
+                                                        Colors.transparent,
+                                                    hoverColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    onTap: () async {
+                                                      context.pushNamed(
+                                                        'Training',
+                                                        queryParameters: {
+                                                          'rlUsersTrainings':
+                                                              serializeParam(
+                                                            childUsersTrainingsItem
+                                                                .id,
+                                                            ParamType.int,
+                                                          ),
+                                                          'dateTime':
+                                                              serializeParam(
+                                                            _model.pickedDate,
+                                                            ParamType.DateTime,
+                                                          ),
+                                                          'isCoachView':
+                                                              serializeParam(
+                                                            true,
+                                                            ParamType.bool,
+                                                          ),
+                                                        }.withoutNulls,
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        color: FlutterFlowTheme
+                                                                .of(context)
+                                                            .secondaryBackground,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
                                                       ),
-                                                      'dateTime':
-                                                          serializeParam(
-                                                        _model.pickedDate,
-                                                        ParamType.DateTime,
-                                                      ),
-                                                      'isCoachView':
-                                                          serializeParam(
-                                                        true,
-                                                        ParamType.bool,
-                                                      ),
-                                                    }.withoutNulls,
-                                                  );
-                                                },
-                                                child: Container(
-                                                  width: double.infinity,
-                                                  decoration: BoxDecoration(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .secondaryBackground,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(16.0),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(
+                                                            16.0),
+                                                        child: Column(
                                                           mainAxisSize:
-                                                              MainAxisSize.max,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                              MainAxisSize.min,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            Expanded(
-                                                              child: Text(
-                                                                valueOrDefault<
-                                                                    String>(
-                                                                  childUsersTrainingsItem
-                                                                      .name,
-                                                                  'null',
-                                                                ),
-                                                                style: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .labelMedium
-                                                                    .override(
-                                                                      fontFamily:
-                                                                          'NTSomic',
-                                                                      letterSpacing:
-                                                                          0.0,
-                                                                      useGoogleFonts:
-                                                                          false,
-                                                                      lineHeight:
-                                                                          1.1,
+                                                            Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .max,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Text(
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                      childUsersTrainingsItem
+                                                                          .name,
+                                                                      'null',
                                                                     ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsetsDirectional
+                                                                    style: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .labelMedium
+                                                                        .override(
+                                                                          fontFamily:
+                                                                              'NTSomic',
+                                                                          letterSpacing:
+                                                                              0.0,
+                                                                          useGoogleFonts:
+                                                                              false,
+                                                                          lineHeight:
+                                                                              1.1,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           4.0,
                                                                           0.0,
                                                                           0.0,
                                                                           0.0),
-                                                              child: Icon(
-                                                                FFIcons.kright4,
-                                                                color: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .white40,
-                                                                size: 24.0,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      0.0,
-                                                                      12.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .max,
-                                                            children: [
-                                                              if (valueOrDefault<
-                                                                          String>(
-                                                                        childUsersTrainingsItem
-                                                                            .usersPhotoUrl,
-                                                                        'null',
-                                                                      ) !=
-                                                                      '')
-                                                                ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              24.0),
-                                                                  child:
-                                                                      CachedNetworkImage(
-                                                                    fadeInDuration:
-                                                                        const Duration(
-                                                                            milliseconds:
-                                                                                200),
-                                                                    fadeOutDuration:
-                                                                        const Duration(
-                                                                            milliseconds:
-                                                                                200),
-                                                                    imageUrl:
-                                                                        valueOrDefault<
-                                                                            String>(
-                                                                      childUsersTrainingsItem
-                                                                          .usersPhotoUrl,
-                                                                      'null',
-                                                                    ),
-                                                                    width: 24.0,
-                                                                    height:
-                                                                        24.0,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                  child: Icon(
+                                                                    FFIcons
+                                                                        .kright4,
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .white40,
+                                                                    size: 24.0,
                                                                   ),
                                                                 ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsetsDirectional
+                                                              ],
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsetsDirectional
+                                                                      .fromSTEB(
+                                                                          0.0,
+                                                                          12.0,
+                                                                          0.0,
+                                                                          0.0),
+                                                              child: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .max,
+                                                                children: [
+                                                                  if (valueOrDefault<
+                                                                              String>(
+                                                                            childUsersTrainingsItem.usersPhotoUrl,
+                                                                            'null',
+                                                                          ) !=
+                                                                          '')
+                                                                    ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              24.0),
+                                                                      child:
+                                                                          CachedNetworkImage(
+                                                                        fadeInDuration:
+                                                                            const Duration(milliseconds: 200),
+                                                                        fadeOutDuration:
+                                                                            const Duration(milliseconds: 200),
+                                                                        imageUrl:
+                                                                            valueOrDefault<String>(
+                                                                          childUsersTrainingsItem
+                                                                              .usersPhotoUrl,
+                                                                          'null',
+                                                                        ),
+                                                                        width:
+                                                                            24.0,
+                                                                        height:
+                                                                            24.0,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      ),
+                                                                    ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsetsDirectional
                                                                         .fromSTEB(
                                                                             4.0,
                                                                             0.0,
                                                                             0.0,
                                                                             0.0),
-                                                                child: Text(
-                                                                  '${valueOrDefault<String>(
-                                                                    childUsersTrainingsItem
-                                                                        .usersName,
-                                                                    'null',
-                                                                  )} ${valueOrDefault<String>(
-                                                                    childUsersTrainingsItem
-                                                                        .usersSurname,
-                                                                    'null',
-                                                                  )}',
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodySmall
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'NTSomic',
-                                                                        color: FlutterFlowTheme.of(context)
-                                                                            .secondaryText,
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        useGoogleFonts:
-                                                                            false,
-                                                                        lineHeight:
-                                                                            1.28,
-                                                                      ),
-                                                                ),
+                                                                    child: Text(
+                                                                      '${valueOrDefault<String>(
+                                                                        childUsersTrainingsItem
+                                                                            .usersName,
+                                                                        'null',
+                                                                      )} ${valueOrDefault<String>(
+                                                                        childUsersTrainingsItem
+                                                                            .usersSurname,
+                                                                        'null',
+                                                                      )}',
+                                                                      style: FlutterFlowTheme.of(
+                                                                              context)
+                                                                          .bodySmall
+                                                                          .override(
+                                                                            fontFamily:
+                                                                                'NTSomic',
+                                                                            color:
+                                                                                FlutterFlowTheme.of(context).secondaryText,
+                                                                            letterSpacing:
+                                                                                0.0,
+                                                                            useGoogleFonts:
+                                                                                false,
+                                                                            lineHeight:
+                                                                                1.28,
+                                                                          ),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
                                                         ),
-                                                      ],
+                                                      ),
                                                     ),
                                                   ),
+                                                );
+                                              }).divide(
+                                                const SizedBox(height: 12.0),
+                                                filterFn:
+                                                    (childUsersTrainingsIndex) {
+                                                  final childUsersTrainingsItem =
+                                                      childUsersTrainings[
+                                                          childUsersTrainingsIndex];
+                                                  return _model.pickedDate! >=
+                                                      functions.startOfDay(
+                                                          getCurrentTimestamp);
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    if (_model.pickedTraining == 'Завершенные')
+                                      Align(
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 0.0),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  20.0, 20.0, 20.0, 0.0),
+                                          child: FutureBuilder<
+                                              List<PassedTrainingsRow>>(
+                                            future: PassedTrainingsTable()
+                                                .queryRows(
+                                              queryFn: (q) => q
+                                                  .eq(
+                                                    'rl_coach',
+                                                    currentUserUid,
+                                                  )
+                                                  .gt(
+                                                    'end_date',
+                                                    supaSerialize<DateTime>(
+                                                        functions.startOfDay(
+                                                            _model
+                                                                .pickedDate!)),
+                                                  )
+                                                  .lt(
+                                                    'end_date',
+                                                    supaSerialize<DateTime>(
+                                                        functions.endOfDay(
+                                                            _model
+                                                                .pickedDate!)),
+                                                  )
+                                                  .order('end_date',
+                                                      ascending: true),
+                                            ),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return const Center(
+                                                  child: SizedBox(
+                                                    width: 50.0,
+                                                    height: 50.0,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                              Color>(
+                                                        Color(0x03E6FC70),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                              List<PassedTrainingsRow>
+                                                  containerPassedTrainingsRowList =
+                                                  snapshot.data!;
+                                              return Container(
+                                                decoration: const BoxDecoration(),
+                                                child: Builder(
+                                                  builder: (context) {
+                                                    final passedTraining =
+                                                        containerPassedTrainingsRowList
+                                                            .toList();
+                                                    if (passedTraining
+                                                        .isEmpty) {
+                                                      return const SizedBox(
+                                                        width: 250.0,
+                                                        child:
+                                                            EmptyPassedTrainingListWidget(),
+                                                      );
+                                                    }
+                                                    return ListView.separated(
+                                                      padding: EdgeInsets.zero,
+                                                      primary: false,
+                                                      shrinkWrap: true,
+                                                      scrollDirection:
+                                                          Axis.vertical,
+                                                      itemCount:
+                                                          passedTraining.length,
+                                                      separatorBuilder:
+                                                          (_, __) => const SizedBox(
+                                                              height: 12.0),
+                                                      itemBuilder: (context,
+                                                          passedTrainingIndex) {
+                                                        final passedTrainingItem =
+                                                            passedTraining[
+                                                                passedTrainingIndex];
+                                                        return FutureBuilder<
+                                                            List<UsersRow>>(
+                                                          future: UsersTable()
+                                                              .querySingleRow(
+                                                            queryFn: (q) =>
+                                                                q.eq(
+                                                              'id',
+                                                              passedTrainingItem
+                                                                  .rlUser,
+                                                            ),
+                                                          ),
+                                                          builder: (context,
+                                                              snapshot) {
+                                                            // Customize what your widget looks like when it's loading.
+                                                            if (!snapshot
+                                                                .hasData) {
+                                                              return const Center(
+                                                                child: SizedBox(
+                                                                  width: 50.0,
+                                                                  height: 50.0,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    valueColor:
+                                                                        AlwaysStoppedAnimation<
+                                                                            Color>(
+                                                                      Color(
+                                                                          0x03E6FC70),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }
+                                                            List<UsersRow>
+                                                                containerUsersRowList =
+                                                                snapshot.data!;
+                                                            final containerUsersRow =
+                                                                containerUsersRowList
+                                                                        .isNotEmpty
+                                                                    ? containerUsersRowList
+                                                                        .first
+                                                                    : null;
+                                                            return InkWell(
+                                                              splashColor: Colors
+                                                                  .transparent,
+                                                              focusColor: Colors
+                                                                  .transparent,
+                                                              hoverColor: Colors
+                                                                  .transparent,
+                                                              highlightColor:
+                                                                  Colors
+                                                                      .transparent,
+                                                              onTap: () async {
+                                                                context
+                                                                    .pushNamed(
+                                                                  'TrainingReport',
+                                                                  queryParameters:
+                                                                      {
+                                                                    'passedTraining':
+                                                                        serializeParam(
+                                                                      passedTrainingItem,
+                                                                      ParamType
+                                                                          .SupabaseRow,
+                                                                    ),
+                                                                  }.withoutNulls,
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                width: double
+                                                                    .infinity,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryBackground,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20.0),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                              16.0),
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .min,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize.max,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child:
+                                                                                Text(
+                                                                              valueOrDefault<String>(
+                                                                                passedTrainingItem.trainingName,
+                                                                                'null',
+                                                                              ),
+                                                                              style: FlutterFlowTheme.of(context).labelMedium.override(
+                                                                                    fontFamily: 'NTSomic',
+                                                                                    letterSpacing: 0.0,
+                                                                                    useGoogleFonts: false,
+                                                                                    lineHeight: 1.1,
+                                                                                  ),
+                                                                            ),
+                                                                          ),
+                                                                          Padding(
+                                                                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                                4.0,
+                                                                                0.0,
+                                                                                0.0,
+                                                                                0.0),
+                                                                            child:
+                                                                                Icon(
+                                                                              FFIcons.kright4,
+                                                                              color: FlutterFlowTheme.of(context).white40,
+                                                                              size: 24.0,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            12.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            Row(
+                                                                          mainAxisSize:
+                                                                              MainAxisSize.max,
+                                                                          children: [
+                                                                            if (containerUsersRow?.photoUrl != null &&
+                                                                                containerUsersRow?.photoUrl != '')
+                                                                              ClipRRect(
+                                                                                borderRadius: BorderRadius.circular(24.0),
+                                                                                child: CachedNetworkImage(
+                                                                                  fadeInDuration: const Duration(milliseconds: 200),
+                                                                                  fadeOutDuration: const Duration(milliseconds: 200),
+                                                                                  imageUrl: valueOrDefault<String>(
+                                                                                    containerUsersRow?.photoUrl,
+                                                                                    'Null',
+                                                                                  ),
+                                                                                  width: 24.0,
+                                                                                  height: 24.0,
+                                                                                  fit: BoxFit.cover,
+                                                                                ),
+                                                                              ),
+                                                                            Padding(
+                                                                              padding: const EdgeInsetsDirectional.fromSTEB(4.0, 0.0, 0.0, 0.0),
+                                                                              child: Text(
+                                                                                '${containerUsersRow?.name} ${containerUsersRow?.surname}',
+                                                                                style: FlutterFlowTheme.of(context).bodySmall.override(
+                                                                                      fontFamily: 'NTSomic',
+                                                                                      color: FlutterFlowTheme.of(context).secondaryText,
+                                                                                      letterSpacing: 0.0,
+                                                                                      useGoogleFonts: false,
+                                                                                      lineHeight: 1.28,
+                                                                                    ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                    );
+                                                  },
                                                 ),
                                               );
-                                            }).divide(const SizedBox(height: 12.0)),
-                                          );
-                                        },
+                                            },
+                                          ),
+                                        ),
                                       ),
-                                    ),
                                   ].addToEnd(const SizedBox(height: 126.0)),
                                 ),
                               ),
@@ -817,13 +1206,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                         builder: (context, snapshot) {
                           // Customize what your widget looks like when it's loading.
                           if (!snapshot.hasData) {
-                            return Center(
+                            return const Center(
                               child: SizedBox(
                                 width: 50.0,
                                 height: 50.0,
                                 child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                    FlutterFlowTheme.of(context).primary,
+                                    Color(0x03E6FC70),
                                   ),
                                 ),
                               ),
@@ -912,88 +1301,112 @@ class _HomeWidgetState extends State<HomeWidget> {
                                               padding: const EdgeInsetsDirectional
                                                   .fromSTEB(
                                                       20.0, 0.0, 0.0, 0.0),
-                                              child: SizedBox(
-                                                width: 64.0,
-                                                height: 76.0,
-                                                child: Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          const AlignmentDirectional(
-                                                              1.0, -1.0),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    4.0,
-                                                                    0.0),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      0.0),
-                                                          child: Image.asset(
-                                                            'assets/images/crown.webp',
-                                                            width: 24.0,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
+                                              child: InkWell(
+                                                splashColor: Colors.transparent,
+                                                focusColor: Colors.transparent,
+                                                hoverColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onTap: () async {
+                                                  context.pushNamed(
+                                                    'ProfileInfo',
+                                                    extra: <String, dynamic>{
+                                                      kTransitionInfoKey:
+                                                          const TransitionInfo(
+                                                        hasTransition: true,
+                                                        transitionType:
+                                                            PageTransitionType
+                                                                .fade,
+                                                        duration: Duration(
+                                                            milliseconds: 0),
                                                       ),
-                                                    ),
-                                                    Align(
-                                                      alignment:
-                                                          const AlignmentDirectional(
-                                                              0.0, 1.0),
-                                                      child: Container(
-                                                        width: 64.0,
-                                                        height: 64.0,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .orange,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        child: Align(
-                                                          alignment:
-                                                              const AlignmentDirectional(
-                                                                  0.0, 0.0),
+                                                    },
+                                                  );
+                                                },
+                                                child: SizedBox(
+                                                  width: 64.0,
+                                                  height: 76.0,
+                                                  child: Stack(
+                                                    children: [
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                1.0, -1.0),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsetsDirectional
+                                                                  .fromSTEB(
+                                                                      0.0,
+                                                                      0.0,
+                                                                      4.0,
+                                                                      0.0),
                                                           child: ClipRRect(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        50.0),
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              fadeInDuration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          200),
-                                                              fadeOutDuration:
-                                                                  const Duration(
-                                                                      milliseconds:
-                                                                          200),
-                                                              imageUrl:
-                                                                  valueOrDefault<
-                                                                      String>(
-                                                                _model
-                                                                    .queryUsers
-                                                                    ?.first
-                                                                    .photoUrl,
-                                                                'null',
-                                                              ),
-                                                              width: 61.0,
-                                                              height: 61.0,
+                                                                        0.0),
+                                                            child: Image.asset(
+                                                              'assets/images/crown.webp',
+                                                              width: 24.0,
                                                               fit: BoxFit.cover,
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                      Align(
+                                                        alignment:
+                                                            const AlignmentDirectional(
+                                                                0.0, 1.0),
+                                                        child: Container(
+                                                          width: 64.0,
+                                                          height: 64.0,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: FlutterFlowTheme
+                                                                    .of(context)
+                                                                .orange,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: Align(
+                                                            alignment:
+                                                                const AlignmentDirectional(
+                                                                    0.0, 0.0),
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          50.0),
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                fadeInDuration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            200),
+                                                                fadeOutDuration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            200),
+                                                                imageUrl:
+                                                                    valueOrDefault<
+                                                                        String>(
+                                                                  _model
+                                                                      .queryUsers
+                                                                      ?.first
+                                                                      .photoUrl,
+                                                                  'null',
+                                                                ),
+                                                                width: 61.0,
+                                                                height: 61.0,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -1112,7 +1525,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            ).animateOnPageLoad(animationsMap[
+                                                'containerOnPageLoadAnimation1']!),
                                             InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -1220,7 +1634,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            ).animateOnPageLoad(animationsMap[
+                                                'containerOnPageLoadAnimation2']!),
                                             InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -1321,7 +1736,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            ).animateOnPageLoad(animationsMap[
+                                                'containerOnPageLoadAnimation3']!),
                                             InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -1430,7 +1846,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            ).animateOnPageLoad(animationsMap[
+                                                'containerOnPageLoadAnimation4']!),
                                           ]
                                               .divide(const SizedBox(width: 15.0))
                                               .addToStart(const SizedBox(width: 20.0))
@@ -1544,61 +1961,96 @@ class _HomeWidgetState extends State<HomeWidget> {
                                                             final childViewUsersTrainingsItem =
                                                                 childViewUsersTrainings[
                                                                     childViewUsersTrainingsIndex];
-                                                            return Column(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  childDateTimeListIndex ==
-                                                                          0
-                                                                      ? 'СЕГОДНЯ'
-                                                                      : valueOrDefault<
-                                                                          String>(
-                                                                          functions
-                                                                              .dateTimeCalendarTitle(childDateTimeListItem),
-                                                                          'null',
-                                                                        ),
-                                                                  style: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMedium
-                                                                      .override(
-                                                                        fontFamily:
-                                                                            'NTSomic',
-                                                                        letterSpacing:
-                                                                            0.0,
-                                                                        useGoogleFonts:
-                                                                            false,
-                                                                      ),
-                                                                ),
-                                                                Padding(
+                                                            return Visibility(
+                                                              visible: !(childViewUsersTrainingsItem
+                                                                  .trainingEndDates
+                                                                  .where((e) =>
+                                                                      functions
+                                                                          .dateTimeToDate(
+                                                                              e) ==
+                                                                      functions
+                                                                          .dateTimeToDate(
+                                                                              childDateTimeListItem))
+                                                                  .toList()
+                                                                  .isNotEmpty),
+                                                              child: Container(
+                                                                decoration:
+                                                                    const BoxDecoration(),
+                                                                child: Padding(
                                                                   padding: const EdgeInsetsDirectional
                                                                       .fromSTEB(
                                                                           0.0,
-                                                                          8.0,
+                                                                          12.0,
                                                                           0.0,
                                                                           0.0),
-                                                                  child:
-                                                                      TrainingCardClientWidget(
-                                                                    key: Key(
-                                                                        'Keygqc_${childViewUsersTrainingsIndex}_of_${childViewUsersTrainings.length}'),
-                                                                    viewUsersTrainingsRow:
-                                                                        childViewUsersTrainingsItem,
-                                                                    isCurrentDate: functions.dateTimeToDate(
-                                                                            getCurrentTimestamp) ==
-                                                                        functions
-                                                                            .dateTimeToDate(childDateTimeListItem),
-                                                                    dateTime:
-                                                                        childDateTimeListItem,
+                                                                  child: Column(
+                                                                    mainAxisSize:
+                                                                        MainAxisSize
+                                                                            .max,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Text(
+                                                                        childDateTimeListIndex ==
+                                                                                0
+                                                                            ? 'СЕГОДНЯ'
+                                                                            : valueOrDefault<String>(
+                                                                                functions.dateTimeCalendarTitle(childDateTimeListItem),
+                                                                                'null',
+                                                                              ),
+                                                                        style: FlutterFlowTheme.of(context)
+                                                                            .bodyMedium
+                                                                            .override(
+                                                                              fontFamily: 'NTSomic',
+                                                                              letterSpacing: 0.0,
+                                                                              useGoogleFonts: false,
+                                                                            ),
+                                                                      ),
+                                                                      Padding(
+                                                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                                                            0.0,
+                                                                            8.0,
+                                                                            0.0,
+                                                                            0.0),
+                                                                        child:
+                                                                            TrainingCardClientWidget(
+                                                                          key: Key(
+                                                                              'Keygqc_${childViewUsersTrainingsIndex}_of_${childViewUsersTrainings.length}'),
+                                                                          viewUsersTrainingsRow:
+                                                                              childViewUsersTrainingsItem,
+                                                                          isCurrentDate:
+                                                                              functions.dateTimeToDate(getCurrentTimestamp) == functions.dateTimeToDate(childDateTimeListItem),
+                                                                          dateTime:
+                                                                              childDateTimeListItem,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
-                                                              ],
+                                                              ),
                                                             );
-                                                          }).divide(const SizedBox(
-                                                              height: 12.0)),
+                                                          }).divide(
+                                                            const SizedBox(
+                                                                height: 12.0),
+                                                            filterFn:
+                                                                (childViewUsersTrainingsIndex) {
+                                                              final childViewUsersTrainingsItem =
+                                                                  childViewUsersTrainings[
+                                                                      childViewUsersTrainingsIndex];
+                                                              return !(childViewUsersTrainingsItem
+                                                                  .trainingEndDates
+                                                                  .where((e) =>
+                                                                      functions
+                                                                          .dateTimeToDate(
+                                                                              e) ==
+                                                                      functions
+                                                                          .dateTimeToDate(
+                                                                              childDateTimeListItem))
+                                                                  .toList()
+                                                                  .isNotEmpty);
+                                                            },
+                                                          ),
                                                         );
                                                       },
                                                     );
@@ -1638,7 +2090,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                       );
                     }
                   },
-                ),
+                ).animateOnPageLoad(
+                    animationsMap['conditionalBuilderOnPageLoadAnimation']!),
                 Align(
                   alignment: const AlignmentDirectional(0.0, 1.0),
                   child: Padding(

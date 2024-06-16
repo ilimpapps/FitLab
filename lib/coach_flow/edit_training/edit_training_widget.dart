@@ -1,5 +1,6 @@
 import '/components/back/back_widget.dart';
 import '/components/warmup_closed/warmup_closed_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'edit_training_model.dart';
 export 'edit_training_model.dart';
 
@@ -17,15 +19,40 @@ class EditTrainingWidget extends StatefulWidget {
   State<EditTrainingWidget> createState() => _EditTrainingWidgetState();
 }
 
-class _EditTrainingWidgetState extends State<EditTrainingWidget> {
+class _EditTrainingWidgetState extends State<EditTrainingWidget>
+    with TickerProviderStateMixin {
   late EditTrainingModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => EditTrainingModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -278,7 +305,8 @@ class _EditTrainingWidgetState extends State<EditTrainingWidget> {
                               ),
                             ].addToEnd(const SizedBox(height: 130.0)),
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
                   ],

@@ -1,4 +1,5 @@
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -7,6 +8,7 @@ import '/flutter_flow/form_field_controller.dart';
 import 'dart:async';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'training_templates_add1_model.dart';
 export 'training_templates_add1_model.dart';
@@ -20,12 +22,14 @@ class TrainingTemplatesAdd1Widget extends StatefulWidget {
 }
 
 class _TrainingTemplatesAdd1WidgetState
-    extends State<TrainingTemplatesAdd1Widget> {
+    extends State<TrainingTemplatesAdd1Widget> with TickerProviderStateMixin {
   late TrainingTemplatesAdd1Model _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
   bool _isKeyboardVisible = false;
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -43,6 +47,28 @@ class _TrainingTemplatesAdd1WidgetState
 
     _model.nameInputTextController ??= TextEditingController();
     _model.nameInputFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -309,7 +335,7 @@ class _TrainingTemplatesAdd1WidgetState
                   ),
                 ),
               ],
-            ),
+            ).animateOnPageLoad(animationsMap['columnOnPageLoadAnimation']!),
           ),
         ),
       ),

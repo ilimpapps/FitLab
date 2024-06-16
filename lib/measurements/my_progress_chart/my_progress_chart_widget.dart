@@ -4,6 +4,7 @@ import '/components/back/back_widget.dart';
 import '/components/chart/chart_widget.dart';
 import '/components/choice4_widget.dart';
 import '/components/dialog_measurement_delete/dialog_measurement_delete_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -11,6 +12,7 @@ import '/measurements/bottom_my_progress_add/bottom_my_progress_add_widget.dart'
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'my_progress_chart_model.dart';
 export 'my_progress_chart_model.dart';
 
@@ -26,10 +28,13 @@ class MyProgressChartWidget extends StatefulWidget {
   State<MyProgressChartWidget> createState() => _MyProgressChartWidgetState();
 }
 
-class _MyProgressChartWidgetState extends State<MyProgressChartWidget> {
+class _MyProgressChartWidgetState extends State<MyProgressChartWidget>
+    with TickerProviderStateMixin {
   late MyProgressChartModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -49,6 +54,28 @@ class _MyProgressChartWidgetState extends State<MyProgressChartWidget> {
       _model.measurementsTemplate = MeasurementsTemplateStruct.maybeFromMap(
           _model.measurementsTemplateJson);
       setState(() {});
+    });
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
     });
   }
 
@@ -305,7 +332,8 @@ class _MyProgressChartWidgetState extends State<MyProgressChartWidget> {
                                 .addToStart(const SizedBox(height: 8.0))
                                 .addToEnd(const SizedBox(height: 50.0)),
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
                   ],

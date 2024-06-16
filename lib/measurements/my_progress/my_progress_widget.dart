@@ -2,9 +2,11 @@ import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
 import '/components/choice_chip/choice_chip_widget.dart';
 import '/components/measurement_item/measurement_item_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'my_progress_model.dart';
 export 'my_progress_model.dart';
 
@@ -20,15 +22,40 @@ class MyProgressWidget extends StatefulWidget {
   State<MyProgressWidget> createState() => _MyProgressWidgetState();
 }
 
-class _MyProgressWidgetState extends State<MyProgressWidget> {
+class _MyProgressWidgetState extends State<MyProgressWidget>
+    with TickerProviderStateMixin {
   late MyProgressModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => MyProgressModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -59,13 +86,13 @@ class _MyProgressWidgetState extends State<MyProgressWidget> {
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: SizedBox(
                       width: 50.0,
                       height: 50.0,
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          FlutterFlowTheme.of(context).primary,
+                          Color(0x03E6FC70),
                         ),
                       ),
                     ),
@@ -269,7 +296,8 @@ class _MyProgressWidgetState extends State<MyProgressWidget> {
                                 ),
                               ].addToEnd(const SizedBox(height: 50.0)),
                             ),
-                          ),
+                          ).animateOnPageLoad(
+                              animationsMap['columnOnPageLoadAnimation']!),
                         ),
                       ],
                     ),

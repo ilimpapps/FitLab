@@ -8,34 +8,29 @@ import 'package:flutter/material.dart';
 class MyProgressAddModel extends FlutterFlowModel<MyProgressAddWidget> {
   ///  Local state fields for this page.
 
+  MeasurementsStruct? measurements;
+  void updateMeasurementsStruct(Function(MeasurementsStruct) updateFn) {
+    updateFn(measurements ??= MeasurementsStruct());
+  }
+
   MeasurementsTemplateStruct? measurementsTemplate;
   void updateMeasurementsTemplateStruct(
       Function(MeasurementsTemplateStruct) updateFn) {
     updateFn(measurementsTemplate ??= MeasurementsTemplateStruct());
   }
 
-  MeasurementsStruct? measurement;
-  void updateMeasurementStruct(Function(MeasurementsStruct) updateFn) {
-    updateFn(measurement ??= MeasurementsStruct());
-  }
-
-  List<double> valuesList = [];
-  void addToValuesList(double item) => valuesList.add(item);
-  void removeFromValuesList(double item) => valuesList.remove(item);
-  void removeAtIndexFromValuesList(int index) => valuesList.removeAt(index);
-  void insertAtIndexInValuesList(int index, double item) =>
-      valuesList.insert(index, item);
-  void updateValuesListAtIndex(int index, Function(double) updateFn) =>
-      valuesList[index] = updateFn(valuesList[index]);
-
-  List<DateTime> dateTimeList = [];
-  void addToDateTimeList(DateTime item) => dateTimeList.add(item);
-  void removeFromDateTimeList(DateTime item) => dateTimeList.remove(item);
-  void removeAtIndexFromDateTimeList(int index) => dateTimeList.removeAt(index);
-  void insertAtIndexInDateTimeList(int index, DateTime item) =>
-      dateTimeList.insert(index, item);
-  void updateDateTimeListAtIndex(int index, Function(DateTime) updateFn) =>
-      dateTimeList[index] = updateFn(dateTimeList[index]);
+  List<MeasurementsStruct> measurementsList = [];
+  void addToMeasurementsList(MeasurementsStruct item) =>
+      measurementsList.add(item);
+  void removeFromMeasurementsList(MeasurementsStruct item) =>
+      measurementsList.remove(item);
+  void removeAtIndexFromMeasurementsList(int index) =>
+      measurementsList.removeAt(index);
+  void insertAtIndexInMeasurementsList(int index, MeasurementsStruct item) =>
+      measurementsList.insert(index, item);
+  void updateMeasurementsListAtIndex(
+          int index, Function(MeasurementsStruct) updateFn) =>
+      measurementsList[index] = updateFn(measurementsList[index]);
 
   ///  State fields for stateful widgets in this page.
 

@@ -1,11 +1,13 @@
 import '/auth/supabase_auth/auth_util.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'dart:ui';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'exercises_details_model.dart';
 export 'exercises_details_model.dart';
 
@@ -25,15 +27,40 @@ class ExercisesDetailsWidget extends StatefulWidget {
   State<ExercisesDetailsWidget> createState() => _ExercisesDetailsWidgetState();
 }
 
-class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget> {
+class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget>
+    with TickerProviderStateMixin {
   late ExercisesDetailsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ExercisesDetailsModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -583,6 +610,45 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget> {
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
+                                            Builder(
+                                              builder: (context) {
+                                                final images =
+                                                    containerExercisesRow
+                                                            ?.photos
+                                                            .toList() ??
+                                                        [];
+                                                return Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  children: List.generate(
+                                                      images.length,
+                                                      (imagesIndex) {
+                                                    final imagesItem =
+                                                        images[imagesIndex];
+                                                    return ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0),
+                                                      child: Image.network(
+                                                        imagesItem,
+                                                        width:
+                                                            MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                70,
+                                                        height: (MediaQuery.sizeOf(
+                                                                        context)
+                                                                    .width -
+                                                                70) /
+                                                            1.78,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    );
+                                                  }).divide(
+                                                      const SizedBox(width: 20.0)),
+                                                );
+                                              },
+                                            ),
                                             InkWell(
                                               splashColor: Colors.transparent,
                                               focusColor: Colors.transparent,
@@ -591,8 +657,7 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget> {
                                                   Colors.transparent,
                                               onTap: () async {
                                                 await launchURL(
-                                                    containerExercisesRow
-                                                        .video!);
+                                                    'https://www.youtube.com/watch?v=mXdyLcQ_VZU&ab_channel=FitStars');
                                               },
                                               child: SizedBox(
                                                 width:
@@ -670,45 +735,6 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget> {
                                                 ),
                                               ),
                                             ),
-                                            Builder(
-                                              builder: (context) {
-                                                final images =
-                                                    containerExercisesRow
-                                                            .photos
-                                                            .toList() ??
-                                                        [];
-                                                return Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: List.generate(
-                                                      images.length,
-                                                      (imagesIndex) {
-                                                    final imagesItem =
-                                                        images[imagesIndex];
-                                                    return ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                      child: Image.network(
-                                                        imagesItem,
-                                                        width:
-                                                            MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .width -
-                                                                40,
-                                                        height: (MediaQuery.sizeOf(
-                                                                        context)
-                                                                    .width -
-                                                                40) /
-                                                            1.78,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    );
-                                                  }).divide(
-                                                      const SizedBox(width: 20.0)),
-                                                );
-                                              },
-                                            ),
                                           ]
                                               .divide(const SizedBox(width: 20.0))
                                               .addToStart(const SizedBox(width: 20.0))
@@ -728,6 +754,7 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget> {
                                             .labelSmall
                                             .override(
                                               fontFamily: 'NTSomic',
+                                              fontSize: 18.0,
                                               letterSpacing: 0.0,
                                               useGoogleFonts: false,
                                               lineHeight: 1.37,
@@ -754,7 +781,8 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget> {
                                     ),
                                   ].addToEnd(const SizedBox(height: 50.0)),
                                 ),
-                              ),
+                              ).animateOnPageLoad(
+                                  animationsMap['columnOnPageLoadAnimation']!),
                             ),
                           ),
                         ],

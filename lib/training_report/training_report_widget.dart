@@ -1,10 +1,12 @@
 import '/backend/supabase/supabase.dart';
 import '/coach_flow/training_report_card/training_report_card_widget.dart';
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'training_report_model.dart';
 export 'training_report_model.dart';
 
@@ -20,15 +22,40 @@ class TrainingReportWidget extends StatefulWidget {
   State<TrainingReportWidget> createState() => _TrainingReportWidgetState();
 }
 
-class _TrainingReportWidgetState extends State<TrainingReportWidget> {
+class _TrainingReportWidgetState extends State<TrainingReportWidget>
+    with TickerProviderStateMixin {
   late TrainingReportModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => TrainingReportModel());
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, 50.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -135,7 +162,15 @@ class _TrainingReportWidgetState extends State<TrainingReportWidget> {
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     0.0, 16.0, 0.0, 0.0),
                                 child: Text(
-                                  'ПОНЕДЕЛЬНИК 15 МАЯ',
+                                  valueOrDefault<String>(
+                                    functions.stringUpperCase(dateTimeFormat(
+                                      'MMMMEEEEd',
+                                      widget.passedTraining?.endDate,
+                                      locale: FFLocalizations.of(context)
+                                          .languageCode,
+                                    )),
+                                    'null',
+                                  ),
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -161,6 +196,23 @@ class _TrainingReportWidgetState extends State<TrainingReportWidget> {
                                         fontWeight: FontWeight.w600,
                                         useGoogleFonts: false,
                                         lineHeight: 1.25,
+                                      ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 12.0, 0.0, 0.0),
+                                child: Text(
+                                  'Тренировка выполнена на ${widget.passedTraining?.trainingProgress?.toString()}%',
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyLarge
+                                      .override(
+                                        fontFamily: 'NTSomic',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        letterSpacing: 0.0,
+                                        useGoogleFonts: false,
+                                        lineHeight: 1.37,
                                       ),
                                 ),
                               ),
@@ -368,7 +420,8 @@ class _TrainingReportWidgetState extends State<TrainingReportWidget> {
                               ),
                             ].addToEnd(const SizedBox(height: 50.0)),
                           ),
-                        ),
+                        ).animateOnPageLoad(
+                            animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
                   ],
