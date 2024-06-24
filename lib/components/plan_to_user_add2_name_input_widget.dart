@@ -2,6 +2,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'plan_to_user_add2_name_input_model.dart';
 export 'plan_to_user_add2_name_input_model.dart';
 
@@ -9,9 +10,11 @@ class PlanToUserAdd2NameInputWidget extends StatefulWidget {
   const PlanToUserAdd2NameInputWidget({
     super.key,
     required this.action,
+    this.initialName,
   });
 
   final Future Function()? action;
+  final String? initialName;
 
   @override
   State<PlanToUserAdd2NameInputWidget> createState() =>
@@ -32,6 +35,19 @@ class _PlanToUserAdd2NameInputWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => PlanToUserAdd2NameInputModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.initialName != null && widget.initialName != '') {
+        setState(() {
+          _model.nameInputTextController?.text = widget.initialName!;
+          _model.nameInputTextController?.selection = TextSelection.collapsed(
+              offset: _model.nameInputTextController!.text.length);
+        });
+      } else {
+        return;
+      }
+    });
 
     _model.nameInputTextController ??= TextEditingController();
     _model.nameInputFocusNode ??= FocusNode();

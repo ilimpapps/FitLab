@@ -405,107 +405,112 @@ class _BottomPlanTemplatesFilterWidgetState
                     ),
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      if (_model.manPicked) {
-                        _model.manPicked = false;
-                        setState(() {});
-                      } else {
-                        _model.manPicked = true;
-                        setState(() {});
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondary,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            12.0, 6.0, 16.0, 6.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Icon(
-                              FFIcons.kman,
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 24.0,
-                            ),
-                            Text(
-                              'Мужчины',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyLarge
-                                  .override(
-                                    fontFamily: 'NTSomic',
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts: false,
-                                    lineHeight: 1.37,
-                                  ),
-                            ),
-                          ],
+            Padding(
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 6.0, 0.0, 0.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        if (_model.manPicked) {
+                          _model.manPicked = false;
+                          setState(() {});
+                        } else {
+                          _model.manPicked = true;
+                          setState(() {});
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).secondary,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12.0, 6.0, 16.0, 6.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Icon(
+                                FFIcons.kman,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 24.0,
+                              ),
+                              Text(
+                                'Мужчины',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'NTSomic',
+                                      letterSpacing: 0.0,
+                                      useGoogleFonts: false,
+                                      lineHeight: 1.37,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      if (_model.womanPicked) {
-                        _model.womanPicked = false;
-                        setState(() {});
-                      } else {
-                        _model.womanPicked = true;
-                        setState(() {});
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).white8,
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            12.0, 6.0, 16.0, 6.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Icon(
-                              FFIcons.kwoman,
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 24.0,
-                            ),
-                            Text(
-                              'Женщины',
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyLarge
-                                  .override(
-                                    fontFamily: 'NTSomic',
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts: false,
-                                    lineHeight: 1.37,
-                                  ),
-                            ),
-                          ],
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        if (_model.womanPicked) {
+                          _model.womanPicked = false;
+                          setState(() {});
+                        } else {
+                          _model.womanPicked = true;
+                          setState(() {});
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).white8,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              12.0, 6.0, 16.0, 6.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Icon(
+                                FFIcons.kwoman,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 24.0,
+                              ),
+                              Text(
+                                'Женщины',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyLarge
+                                    .override(
+                                      fontFamily: 'NTSomic',
+                                      letterSpacing: 0.0,
+                                      useGoogleFonts: false,
+                                      lineHeight: 1.37,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ]
-                    .divide(const SizedBox(width: 8.0))
-                    .addToStart(const SizedBox(width: 20.0))
-                    .addToEnd(const SizedBox(width: 20.0)),
+                  ]
+                      .divide(const SizedBox(width: 8.0))
+                      .addToStart(const SizedBox(width: 20.0))
+                      .addToEnd(const SizedBox(width: 20.0)),
+                ),
               ),
             ),
             Padding(

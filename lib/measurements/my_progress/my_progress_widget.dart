@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'my_progress_model.dart';
 export 'my_progress_model.dart';
 
@@ -67,6 +68,8 @@ class _MyProgressWidgetState extends State<MyProgressWidget>
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -77,12 +80,20 @@ class _MyProgressWidgetState extends State<MyProgressWidget>
         body: Stack(
           children: [
             FutureBuilder<List<UsersMeasurementsRow>>(
-              future: UsersMeasurementsTable().queryRows(
-                queryFn: (q) => q.eq(
-                  'rl_users',
-                  widget.rlUser,
+              future: _model
+                  .usersMeasurementsCache(
+                overrideCache: true,
+                requestFn: () => UsersMeasurementsTable().queryRows(
+                  queryFn: (q) => q.eq(
+                    'rl_users',
+                    widget.rlUser,
+                  ),
                 ),
-              ),
+              )
+                  .then((result) {
+                _model.requestCompleted = true;
+                return result;
+              }),
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
                 if (!snapshot.hasData) {
@@ -139,37 +150,39 @@ class _MyProgressWidgetState extends State<MyProgressWidget>
                                   child: const BackWidget(),
                                 ),
                               ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  context.pushNamed(
-                                    'MyProgressAdd',
-                                    queryParameters: {
-                                      'type': serializeParam(
-                                        _model.picker,
-                                        ParamType.String,
-                                      ),
-                                    }.withoutNulls,
-                                  );
-                                },
-                                child: Container(
-                                  width: 56.0,
-                                  height: 56.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).primary,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    FFIcons.kplus2,
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryBackground,
-                                    size: 24.0,
+                              if (!FFAppState().isCoach)
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  onTap: () async {
+                                    context.pushNamed(
+                                      'MyProgressAdd',
+                                      queryParameters: {
+                                        'type': serializeParam(
+                                          _model.picker,
+                                          ParamType.String,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 56.0,
+                                    height: 56.0,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          FlutterFlowTheme.of(context).primary,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      FFIcons.kplus2,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryBackground,
+                                      size: 24.0,
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
@@ -288,6 +301,15 @@ class _MyProgressWidgetState extends State<MyProgressWidget>
                                             key: Key(
                                                 'Keymwd_${msIndex}_of_${ms.length}'),
                                             usersMeasurementsRow: msItem,
+                                            action: () async {
+                                              setState(() {
+                                                _model
+                                                    .clearUsersMeasurementsCacheCache();
+                                                _model.requestCompleted = false;
+                                              });
+                                              await _model
+                                                  .waitForRequestCompleted();
+                                            },
                                           );
                                         }).divide(const SizedBox(height: 8.0)),
                                       );

@@ -165,7 +165,7 @@ class _TrainingReportWidgetState extends State<TrainingReportWidget>
                                   valueOrDefault<String>(
                                     functions.stringUpperCase(dateTimeFormat(
                                       'MMMMEEEEd',
-                                      widget.passedTraining?.endDate,
+                                      widget.passedTraining?.endTraining,
                                       locale: FFLocalizations.of(context)
                                           .languageCode,
                                     )),
@@ -299,7 +299,8 @@ class _TrainingReportWidgetState extends State<TrainingReportWidget>
                                         functions.differenceInHoursAndMinutes(
                                             widget
                                                 .passedTraining!.startTraining!,
-                                            widget.passedTraining!.endDate!),
+                                            widget
+                                                .passedTraining!.endTraining!),
                                         style: FlutterFlowTheme.of(context)
                                             .bodySmall
                                             .override(

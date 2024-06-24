@@ -15,9 +15,11 @@ class TrainingModel extends FlutterFlowModel<TrainingWidget> {
   late BackModel backModel;
   // Models for PlanDetailsItem dynamic component.
   late FlutterFlowDynamicModels<PlanDetailsItemModel> planDetailsItemModels;
-  Completer<List<UsersTrainingsRow>>? requestCompleter2;
   // Stores action output result for [Backend Call - Insert Row] action in Button widget.
   PassedTrainingsRow? passedTraining;
+  Completer<List<PassedTrainingsRow>>? requestCompleter2;
+  // Stores action output result for [Backend Call - Update Row(s)] action in Button widget.
+  List<PassedTrainingsRow>? outputPassedTrainings;
 
   @override
   void initState(BuildContext context) {

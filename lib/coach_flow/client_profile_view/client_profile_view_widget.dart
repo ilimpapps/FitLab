@@ -870,7 +870,7 @@ class _ClientProfileViewWidgetState extends State<ClientProfileViewWidget>
                                                                           trainingsItem
                                                                               .startTraining!,
                                                                           trainingsItem
-                                                                              .endDate!),
+                                                                              .endTraining!),
                                                                       style: FlutterFlowTheme.of(
                                                                               context)
                                                                           .bodySmall

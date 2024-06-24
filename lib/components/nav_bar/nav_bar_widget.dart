@@ -260,7 +260,7 @@ class _NavBarWidgetState extends State<NavBarWidget> {
                         HapticFeedback.mediumImpact();
 
                         context.goNamed(
-                          'CoachList',
+                          'CoachesList',
                           extra: <String, dynamic>{
                             kTransitionInfoKey: const TransitionInfo(
                               hasTransition: true,

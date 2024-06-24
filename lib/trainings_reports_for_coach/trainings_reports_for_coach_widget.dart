@@ -194,11 +194,16 @@ class _TrainingsReportsForCoachWidgetState
                                               'Клиент',
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyMedium
+                                                      .bodyLarge
                                                       .override(
                                                         fontFamily: 'NTSomic',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
                                                         letterSpacing: 0.0,
                                                         useGoogleFonts: false,
+                                                        lineHeight: 1.3,
                                                       ),
                                             ),
                                           ),
@@ -232,11 +237,16 @@ class _TrainingsReportsForCoachWidgetState
                                               '${clientQueryUsersRow?.name} ${clientQueryUsersRow?.surname}',
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyMedium
+                                                      .bodyLarge
                                                       .override(
                                                         fontFamily: 'NTSomic',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
                                                         letterSpacing: 0.0,
                                                         useGoogleFonts: false,
+                                                        lineHeight: 1.3,
                                                       ),
                                             ),
                                           ),
@@ -526,7 +536,7 @@ class _TrainingsReportsForCoachWidgetState
                                                                             child:
                                                                                 Text(
                                                                               valueOrDefault<String>(
-                                                                                functions.differenceInHoursAndMinutes(trainingsItem.startTraining!, trainingsItem.endDate!),
+                                                                                functions.differenceInHoursAndMinutes(trainingsItem.startTraining!, trainingsItem.endTraining!),
                                                                                 '0',
                                                                               ),
                                                                               style: FlutterFlowTheme.of(context).bodySmall.override(

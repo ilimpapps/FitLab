@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/measurements/bottom_my_progress_add/bottom_my_progress_add_widget.dart';
 import '/backend/schema/structs/index.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'measurement_item_model.dart';
 export 'measurement_item_model.dart';
 
@@ -11,9 +12,11 @@ class MeasurementItemWidget extends StatefulWidget {
   const MeasurementItemWidget({
     super.key,
     required this.usersMeasurementsRow,
+    required this.action,
   });
 
   final UsersMeasurementsRow? usersMeasurementsRow;
+  final Future Function()? action;
 
   @override
   State<MeasurementItemWidget> createState() => _MeasurementItemWidgetState();
@@ -43,6 +46,8 @@ class _MeasurementItemWidgetState extends State<MeasurementItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return InkWell(
       splashColor: Colors.transparent,
       focusColor: Colors.transparent,
@@ -203,28 +208,9 @@ class _MeasurementItemWidgetState extends State<MeasurementItemWidget> {
                   ],
                 ),
               ),
-              Align(
-                alignment: const AlignmentDirectional(1.2, -9.0),
-                child: InkWell(
-                  splashColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () async {
-                    await showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: MediaQuery.viewInsetsOf(context),
-                          child: BottomMyProgressAddWidget(
-                            usersMeasurementsRow: widget.usersMeasurementsRow!,
-                          ),
-                        );
-                      },
-                    ).then((value) => safeSetState(() {}));
-                  },
+              if (!FFAppState().isCoach)
+                Align(
+                  alignment: const AlignmentDirectional(1.2, -9.0),
                   child: Container(
                     width: 70.0,
                     height: 70.0,
@@ -234,18 +220,51 @@ class _MeasurementItemWidgetState extends State<MeasurementItemWidget> {
                     ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: const AlignmentDirectional(1.0, -1.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Icon(
-                    FFIcons.kplus2,
-                    color: FlutterFlowTheme.of(context).primaryBackground,
-                    size: 24.0,
+              if (!FFAppState().isCoach)
+                Align(
+                  alignment: const AlignmentDirectional(1.0, -1.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Icon(
+                      FFIcons.kplus2,
+                      color: FlutterFlowTheme.of(context).primaryBackground,
+                      size: 24.0,
+                    ),
                   ),
                 ),
-              ),
+              if (!FFAppState().isCoach)
+                Align(
+                  alignment: const AlignmentDirectional(1.0, 0.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: MediaQuery.viewInsetsOf(context),
+                            child: BottomMyProgressAddWidget(
+                              usersMeasurementsRow:
+                                  widget.usersMeasurementsRow!,
+                            ),
+                          );
+                        },
+                      ).then((value) => safeSetState(() {}));
+
+                      await widget.action?.call();
+                    },
+                    child: Container(
+                      width: 60.0,
+                      height: double.infinity,
+                      decoration: const BoxDecoration(),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

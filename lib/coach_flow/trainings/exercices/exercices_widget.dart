@@ -1,6 +1,7 @@
 import '/backend/api_requests/api_calls.dart';
 import '/backend/supabase/supabase.dart';
 import '/components/back/back_widget.dart';
+import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
@@ -8,6 +9,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'exercices_model.dart';
 export 'exercices_model.dart';
 
@@ -25,10 +27,13 @@ class ExercicesWidget extends StatefulWidget {
   State<ExercicesWidget> createState() => _ExercicesWidgetState();
 }
 
-class _ExercicesWidgetState extends State<ExercicesWidget> {
+class _ExercicesWidgetState extends State<ExercicesWidget>
+    with TickerProviderStateMixin {
   late ExercicesModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
@@ -37,6 +42,28 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
 
     _model.searchInputTextController ??= TextEditingController();
     _model.searchInputFocusNode ??= FocusNode();
+
+    animationsMap.addAll({
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: const Offset(0.0, -20.0),
+            end: const Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
   }
 
   @override
@@ -149,6 +176,7 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
                                       table: 'exercises',
                                       column: 'name',
                                     );
+
                                     if ((_model.apiResultbc9?.succeeded ??
                                         true)) {
                                       setState(() {});
@@ -699,20 +727,8 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
                                                           // Customize what your widget looks like when it's loading.
                                                           if (!snapshot
                                                               .hasData) {
-                                                            return const Center(
-                                                              child: SizedBox(
-                                                                width: 50.0,
-                                                                height: 50.0,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  valueColor:
-                                                                      AlwaysStoppedAnimation<
-                                                                          Color>(
-                                                                    Color(
-                                                                        0x03E6FC70),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                            return Image.asset(
+                                                              '',
                                                             );
                                                           }
                                                           List<ExercisesRow>
@@ -852,7 +868,7 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
                                                                                     )}',
                                                                                     style: FlutterFlowTheme.of(context).bodySmall.override(
                                                                                           fontFamily: 'NTSomic',
-                                                                                          color: FlutterFlowTheme.of(context).accent4,
+                                                                                          color: FlutterFlowTheme.of(context).white40,
                                                                                           fontSize: 12.0,
                                                                                           letterSpacing: 0.0,
                                                                                           useGoogleFonts: false,
@@ -869,7 +885,7 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
                                                                                     )}',
                                                                                     style: FlutterFlowTheme.of(context).bodySmall.override(
                                                                                           fontFamily: 'NTSomic',
-                                                                                          color: FlutterFlowTheme.of(context).accent4,
+                                                                                          color: FlutterFlowTheme.of(context).white40,
                                                                                           fontSize: 12.0,
                                                                                           letterSpacing: 0.0,
                                                                                           useGoogleFonts: false,
@@ -883,7 +899,7 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
                                                                                     'Сложность: ${queryExercisesExercisesRow.difficulty}',
                                                                                     style: FlutterFlowTheme.of(context).bodySmall.override(
                                                                                           fontFamily: 'NTSomic',
-                                                                                          color: FlutterFlowTheme.of(context).accent4,
+                                                                                          color: FlutterFlowTheme.of(context).white40,
                                                                                           fontSize: 12.0,
                                                                                           letterSpacing: 0.0,
                                                                                           useGoogleFonts: false,
@@ -902,7 +918,9 @@ class _ExercicesWidgetState extends State<ExercicesWidget> {
                                                               );
                                                             }).divide(const SizedBox(
                                                                 height: 8.0)),
-                                                          );
+                                                          ).animateOnPageLoad(
+                                                              animationsMap[
+                                                                  'columnOnPageLoadAnimation']!);
                                                         },
                                                       ),
                                                     ),

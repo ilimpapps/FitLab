@@ -476,39 +476,157 @@ class _LoginWidgetState extends State<LoginWidget>
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Row(
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
                                     children: [
-                                      FaIcon(
-                                        FontAwesomeIcons.info,
-                                        color: FlutterFlowTheme.of(context)
-                                            .accent3,
-                                        size: 24.0,
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          FaIcon(
+                                            FontAwesomeIcons.info,
+                                            color: FlutterFlowTheme.of(context)
+                                                .accent4,
+                                            size: 24.0,
+                                          ),
+                                          Flexible(
+                                            child: Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(
+                                                      16.0, 0.0, 0.0, 0.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                children: [
+                                                  SelectionArea(
+                                                      child: Text(
+                                                    'Для удобства тестирования и входа воспользуйтесь тестовыми аккаунтами:',
+                                                    textAlign: TextAlign.start,
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyLarge
+                                                        .override(
+                                                          fontFamily: 'NTSomic',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          fontSize: 14.0,
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: false,
+                                                          lineHeight: 1.37,
+                                                        ),
+                                                  )),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Flexible(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 0.0, 0.0),
-                                          child: SelectionArea(
-                                              child: Text(
-                                            'Для входа можно использовать тестовые аккаунты в качестве ТРЕНЕРА:\nлогин: 11@mail.ru ; пароль: 111111\n\nВ качестве КЛИЕНТА:\nлогин: 22@mail.ru ; пароль: 111111',
-                                            textAlign: TextAlign.start,
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyLarge
-                                                .override(
-                                                  fontFamily: 'NTSomic',
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 24.0, 0.0, 0.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Expanded(
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  GoRouter.of(context)
+                                                      .prepareAuthEvent();
+
+                                                  final user = await authManager
+                                                      .signInWithEmail(
+                                                    context,
+                                                    '22@mail.ru',
+                                                    '111111',
+                                                  );
+                                                  if (user == null) {
+                                                    return;
+                                                  }
+
+                                                  context.goNamedAuth(
+                                                      'Home', context.mounted);
+                                                },
+                                                text: 'Клиент',
+                                                options: FFButtonOptions(
+                                                  width: double.infinity,
+                                                  height: 52.0,
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          24.0, 0.0, 24.0, 0.0),
+                                                  iconPadding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(0.0, 0.0,
+                                                              0.0, 0.0),
                                                   color: FlutterFlowTheme.of(
                                                           context)
-                                                      .accent3,
-                                                  fontSize: 14.0,
-                                                  letterSpacing: 0.0,
-                                                  useGoogleFonts: false,
-                                                  lineHeight: 1.37,
+                                                      .white8,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .labelSmall
+                                                      .override(
+                                                        fontFamily: 'NTSomic',
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: false,
+                                                      ),
+                                                  elevation: 0.0,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0),
                                                 ),
-                                          )),
+                                                showLoadingIndicator: false,
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: FFButtonWidget(
+                                                onPressed: () async {
+                                                  GoRouter.of(context)
+                                                      .prepareAuthEvent();
+
+                                                  final user = await authManager
+                                                      .signInWithEmail(
+                                                    context,
+                                                    '11@mail.ru',
+                                                    '111111',
+                                                  );
+                                                  if (user == null) {
+                                                    return;
+                                                  }
+
+                                                  context.goNamedAuth(
+                                                      'Home', context.mounted);
+                                                },
+                                                text: 'Тренер',
+                                                options: FFButtonOptions(
+                                                  width: double.infinity,
+                                                  height: 52.0,
+                                                  padding: const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                          24.0, 0.0, 24.0, 0.0),
+                                                  iconPadding:
+                                                      const EdgeInsetsDirectional
+                                                          .fromSTEB(0.0, 0.0,
+                                                              0.0, 0.0),
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .white8,
+                                                  textStyle: FlutterFlowTheme
+                                                          .of(context)
+                                                      .labelSmall
+                                                      .override(
+                                                        fontFamily: 'NTSomic',
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: false,
+                                                      ),
+                                                  elevation: 0.0,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0),
+                                                ),
+                                                showLoadingIndicator: false,
+                                              ),
+                                            ),
+                                          ].divide(const SizedBox(width: 12.0)),
                                         ),
                                       ),
                                     ],

@@ -75,42 +75,43 @@ class _PlanToUserWidgetState extends State<PlanToUserWidget>
         child: Scaffold(
           key: scaffoldKey,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          body: FutureBuilder<List<ViewPlanToUserRow>>(
-            future: ViewPlanToUserTable().queryRows(
-              queryFn: (q) => q.eq(
-                'rl_coach',
-                currentUserUid,
-              ),
-            ),
-            builder: (context, snapshot) {
-              // Customize what your widget looks like when it's loading.
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color(0x03E6FC70),
-                      ),
-                    ),
-                  ),
-                );
-              }
-              List<ViewPlanToUserRow> viewPlanToUserViewPlanToUserRowList =
-                  snapshot.data!;
-              return Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: Image.asset(
-                      'assets/images/bg.png',
-                    ).image,
+          body: Stack(
+            children: [
+              FutureBuilder<List<ViewPlanToUserRow>>(
+                future: ViewPlanToUserTable().queryRows(
+                  queryFn: (q) => q.eq(
+                    'rl_coach',
+                    currentUserUid,
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    Container(
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: SizedBox(
+                        width: 50.0,
+                        height: 50.0,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Color(0x03E6FC70),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  List<ViewPlanToUserRow> viewPlanToUserViewPlanToUserRowList =
+                      snapshot.data!;
+                  return Container(
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: Image.asset(
+                          'assets/images/bg.png',
+                        ).image,
+                      ),
+                    ),
+                    child: Container(
                       decoration: const BoxDecoration(),
                       child: Padding(
                         padding:
@@ -229,7 +230,7 @@ class _PlanToUserWidgetState extends State<PlanToUserWidget>
                                         hoverColor: Colors.transparent,
                                         highlightColor: Colors.transparent,
                                         onTap: () async {
-                                          context.pushNamed('PlanTemplates');
+                                          context.pushNamed('TemplatesPlans');
                                         },
                                         child: Container(
                                           width: 140.0,
@@ -356,26 +357,25 @@ class _PlanToUserWidgetState extends State<PlanToUserWidget>
                             animationsMap['columnOnPageLoadAnimation']!),
                       ),
                     ),
-                    Align(
-                      alignment: const AlignmentDirectional(0.0, 1.0),
-                      child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 50.0),
-                        child: wrapWithModel(
-                          model: _model.navBarModel,
-                          updateCallback: () => setState(() {}),
-                          updateOnChange: true,
-                          child: NavBarWidget(
-                            index: 2,
-                            isCoach: FFAppState().isCoach,
-                          ),
-                        ),
-                      ),
+                  );
+                },
+              ),
+              Align(
+                alignment: const AlignmentDirectional(0.0, 1.0),
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 50.0),
+                  child: wrapWithModel(
+                    model: _model.navBarModel,
+                    updateCallback: () => setState(() {}),
+                    updateOnChange: true,
+                    child: NavBarWidget(
+                      index: 2,
+                      isCoach: FFAppState().isCoach,
                     ),
-                  ],
+                  ),
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),

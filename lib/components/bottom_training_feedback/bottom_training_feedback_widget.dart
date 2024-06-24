@@ -11,10 +11,10 @@ export 'bottom_training_feedback_model.dart';
 class BottomTrainingFeedbackWidget extends StatefulWidget {
   const BottomTrainingFeedbackWidget({
     super.key,
-    required this.passedTrainiing,
+    required this.rlPassedTrainings,
   });
 
-  final PassedTrainingsRow? passedTrainiing;
+  final int? rlPassedTrainings;
 
   @override
   State<BottomTrainingFeedbackWidget> createState() =>
@@ -371,7 +371,7 @@ class _BottomTrainingFeedbackWidgetState
                                       },
                                       matchingRows: (rows) => rows.eq(
                                         'id',
-                                        widget.passedTrainiing?.id,
+                                        widget.rlPassedTrainings,
                                       ),
                                     );
                                     Navigator.pop(context);

@@ -3,6 +3,7 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'plan_to_user_add2_dropdown_model.dart';
 export 'plan_to_user_add2_dropdown_model.dart';
 
@@ -10,9 +11,11 @@ class PlanToUserAdd2DropdownWidget extends StatefulWidget {
   const PlanToUserAdd2DropdownWidget({
     super.key,
     required this.action,
+    this.initialWeekday,
   });
 
   final Future Function()? action;
+  final int? initialWeekday;
 
   @override
   State<PlanToUserAdd2DropdownWidget> createState() =>
@@ -33,6 +36,17 @@ class _PlanToUserAdd2DropdownWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => PlanToUserAdd2DropdownModel());
+
+    // On component load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      if (widget.initialWeekday != null) {
+        setState(() {
+          _model.weekDayValueController?.value = widget.initialWeekday!;
+        });
+      } else {
+        return;
+      }
+    });
   }
 
   @override
