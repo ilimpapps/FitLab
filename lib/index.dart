@@ -29,24 +29,12 @@ export '/measurements/my_progress_add/my_progress_add_widget.dart'
 export '/measurements/my_progress_chart/my_progress_chart_widget.dart'
     show MyProgressChartWidget;
 export '/main/achievments/achievments_widget.dart' show AchievmentsWidget;
-export '/coach/coach_list/coach_list_widget.dart' show CoachListWidget;
+export '/coaches/coaches_list/coaches_list_widget.dart' show CoachesListWidget;
 export '/coach_flow/clients_list/clients_list_widget.dart'
     show ClientsListWidget;
-export '/coach/coach_info/coach_info_widget.dart' show CoachInfoWidget;
+export '/coaches/coach_info/coach_info_widget.dart' show CoachInfoWidget;
 export '/coach_flow/plan_to_user/plan_to_user/plan_to_user_widget.dart'
     show PlanToUserWidget;
-export '/coach_flow/training_templates/training_templates/training_templates_widget.dart'
-    show TrainingTemplatesWidget;
-export '/coach_flow/training_templates/training_templates_add1/training_templates_add1_widget.dart'
-    show TrainingTemplatesAdd1Widget;
-export '/coach_flow/training_templates/training_templates_add2/training_templates_add2_widget.dart'
-    show TrainingTemplatesAdd2Widget;
-export '/coach_flow/plan_templates/plan_templates/plan_templates_widget.dart'
-    show PlanTemplatesWidget;
-export '/coach_flow/plan_templates/plan_templates_add1/plan_templates_add1_widget.dart'
-    show PlanTemplatesAdd1Widget;
-export '/coach_flow/plan_templates/plan_templates_add2/plan_templates_add2_widget.dart'
-    show PlanTemplatesAdd2Widget;
 export '/coach_flow/plan_to_user/plan_view/plan_view_widget.dart'
     show PlanViewWidget;
 export '/coach_flow/edit_training/edit_training_widget.dart'
@@ -62,8 +50,14 @@ export '/coach_flow/plan_to_user/plan_to_user_add2/plan_to_user_add2_widget.dart
 export '/coach_flow/client_profile_view/client_profile_view_widget.dart'
     show ClientProfileViewWidget;
 export '/training_report/training_report_widget.dart' show TrainingReportWidget;
-export '/coach_flow/training_templates/training_templates_edit/training_templates_edit_widget.dart'
-    show TrainingTemplatesEditWidget;
 export '/archive/archive_widget.dart' show ArchiveWidget;
 export '/trainings_reports_for_coach/trainings_reports_for_coach_widget.dart'
     show TrainingsReportsForCoachWidget;
+export '/coach_flow/plan_templates/templates_details/templates_details_widget.dart'
+    show TemplatesDetailsWidget;
+export '/coach_flow/plan_templates/templates_plans/templates_plans_widget.dart'
+    show TemplatesPlansWidget;
+export '/coach_flow/plan_templates/templates_trainings/templates_trainings_widget.dart'
+    show TemplatesTrainingsWidget;
+export '/advices/advices_widget.dart' show AdvicesWidget;
+export '/podbadrivaniye/podbadrivaniye_widget.dart' show PodbadrivaniyeWidget;

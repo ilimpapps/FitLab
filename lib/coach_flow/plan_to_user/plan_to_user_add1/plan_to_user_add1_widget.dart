@@ -1,3 +1,4 @@
+import '/coach_flow/plan_templates/bottom_plan_templates_choice/bottom_plan_templates_choice_widget.dart';
 import '/components/back/back_widget.dart';
 import '/components/custom_picker/custom_picker_widget.dart';
 import '/components/info_plan_creation/info_plan_creation_widget.dart';
@@ -5,6 +6,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -273,72 +275,77 @@ class _PlanToUserAdd1WidgetState extends State<PlanToUserAdd1Widget>
                                           hoverColor: Colors.transparent,
                                           highlightColor: Colors.transparent,
                                           onTap: () async {
-                                            final datePickedDate =
-                                                await showDatePicker(
-                                              context: context,
-                                              initialDate: getCurrentTimestamp,
-                                              firstDate: getCurrentTimestamp,
-                                              lastDate: DateTime(2050),
-                                              builder: (context, child) {
-                                                return wrapInMaterialDatePickerTheme(
-                                                  context,
-                                                  child!,
-                                                  headerBackgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primary,
-                                                  headerForegroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .info,
-                                                  headerTextStyle:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .headlineLarge
-                                                          .override(
-                                                            fontFamily:
-                                                                'NTSomic',
-                                                            fontSize: 32.0,
-                                                            letterSpacing: 0.0,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            useGoogleFonts:
-                                                                false,
-                                                          ),
-                                                  pickerBackgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  pickerForegroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryText,
-                                                  selectedDateTimeBackgroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondary,
-                                                  selectedDateTimeForegroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .info,
-                                                  actionButtonForegroundColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .primaryText,
-                                                  iconSize: 24.0,
-                                                );
-                                              },
-                                            );
-
-                                            if (datePickedDate != null) {
-                                              safeSetState(() {
-                                                _model.datePicked = DateTime(
-                                                  datePickedDate.year,
-                                                  datePickedDate.month,
-                                                  datePickedDate.day,
-                                                );
-                                              });
-                                            }
+                                            await showModalBottomSheet<bool>(
+                                                context: context,
+                                                builder: (context) {
+                                                  final datePickedCupertinoTheme =
+                                                      CupertinoTheme.of(
+                                                          context);
+                                                  return Container(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            3,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    color: FlutterFlowTheme.of(
+                                                            context)
+                                                        .secondaryBackground,
+                                                    child: CupertinoTheme(
+                                                      data:
+                                                          datePickedCupertinoTheme
+                                                              .copyWith(
+                                                        textTheme:
+                                                            datePickedCupertinoTheme
+                                                                .textTheme
+                                                                .copyWith(
+                                                          dateTimePickerTextStyle:
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .bodyLarge
+                                                                  .override(
+                                                                    fontFamily:
+                                                                        'NTSomic',
+                                                                    color: FlutterFlowTheme.of(
+                                                                            context)
+                                                                        .primaryText,
+                                                                    letterSpacing:
+                                                                        0.0,
+                                                                    useGoogleFonts:
+                                                                        false,
+                                                                  ),
+                                                        ),
+                                                      ),
+                                                      child:
+                                                          CupertinoDatePicker(
+                                                        mode:
+                                                            CupertinoDatePickerMode
+                                                                .date,
+                                                        minimumDate:
+                                                            getCurrentTimestamp,
+                                                        initialDateTime:
+                                                            getCurrentTimestamp,
+                                                        maximumDate:
+                                                            DateTime(2050),
+                                                        backgroundColor:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryBackground,
+                                                        use24hFormat: false,
+                                                        onDateTimeChanged:
+                                                            (newDateTime) =>
+                                                                safeSetState(
+                                                                    () {
+                                                          _model.datePicked =
+                                                              newDateTime;
+                                                        }),
+                                                      ),
+                                                    ),
+                                                  );
+                                                });
                                             if (_model.datePicked != null) {
                                               _model.endDate =
                                                   _model.datePicked;
@@ -487,64 +494,123 @@ class _PlanToUserAdd1WidgetState extends State<PlanToUserAdd1Widget>
                   child: Padding(
                     padding:
                         const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 50.0),
-                    child: FFButtonWidget(
-                      onPressed: ((_model.trainingsCount == null) ||
-                              (_model.endDate == null) ||
-                              (_model.trainingsCount == 0))
-                          ? null
-                          : () async {
-                              context.pushNamed(
-                                'PlanToUserAdd2',
-                                queryParameters: {
-                                  'trainingsCount': serializeParam(
-                                    _model.trainingsCount,
-                                    ParamType.int,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FFButtonWidget(
+                          onPressed: () async {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              enableDrag: false,
+                              context: context,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () =>
+                                      _model.unfocusNode.canRequestFocus
+                                          ? FocusScope.of(context)
+                                              .requestFocus(_model.unfocusNode)
+                                          : FocusScope.of(context).unfocus(),
+                                  child: Padding(
+                                    padding: MediaQuery.viewInsetsOf(context),
+                                    child: BottomPlanTemplatesChoiceWidget(
+                                      rlUsers: widget.rlUsers!,
+                                      usersName: widget.usersName,
+                                      usersSurname: widget.usersSurname,
+                                    ),
                                   ),
-                                  'usersName': serializeParam(
-                                    widget.usersName,
-                                    ParamType.String,
-                                  ),
-                                  'usersSurname': serializeParam(
-                                    widget.usersSurname,
-                                    ParamType.String,
-                                  ),
-                                  'rlUsers': serializeParam(
-                                    widget.rlUsers,
-                                    ParamType.String,
-                                  ),
-                                  'endDate': serializeParam(
-                                    _model.endDate,
-                                    ParamType.DateTime,
-                                  ),
-                                }.withoutNulls,
-                              );
-                            },
-                      text: 'Далее',
-                      options: FFButtonOptions(
-                        width: double.infinity,
-                        height: 52.0,
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            24.0, 0.0, 24.0, 0.0),
-                        iconPadding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                        color: FlutterFlowTheme.of(context).primary,
-                        textStyle:
-                            FlutterFlowTheme.of(context).labelSmall.override(
+                                );
+                              },
+                            ).then((value) => safeSetState(() {}));
+                          },
+                          text: 'Выберите шаблон',
+                          options: FFButtonOptions(
+                            width: double.infinity,
+                            height: 52.0,
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                24.0, 0.0, 24.0, 0.0),
+                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            color: const Color(0x00060409),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .labelSmall
+                                .override(
                                   fontFamily: 'NTSomic',
-                                  color: FlutterFlowTheme.of(context)
-                                      .primaryBackground,
                                   letterSpacing: 0.0,
                                   useGoogleFonts: false,
                                 ),
-                        elevation: 0.0,
-                        borderSide: const BorderSide(
-                          width: 0.0,
+                            elevation: 0.0,
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          showLoadingIndicator: false,
                         ),
-                        borderRadius: BorderRadius.circular(18.0),
-                        disabledColor: FlutterFlowTheme.of(context).divider,
-                        disabledTextColor: FlutterFlowTheme.of(context).white40,
-                      ),
-                      showLoadingIndicator: false,
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 12.0, 0.0, 0.0),
+                          child: FFButtonWidget(
+                            onPressed: ((_model.trainingsCount == null) ||
+                                    (_model.endDate == null) ||
+                                    (_model.trainingsCount == 0))
+                                ? null
+                                : () async {
+                                    context.pushNamed(
+                                      'PlanToUserAdd2',
+                                      queryParameters: {
+                                        'trainingsCount': serializeParam(
+                                          _model.trainingsCount,
+                                          ParamType.int,
+                                        ),
+                                        'usersName': serializeParam(
+                                          widget.usersName,
+                                          ParamType.String,
+                                        ),
+                                        'usersSurname': serializeParam(
+                                          widget.usersSurname,
+                                          ParamType.String,
+                                        ),
+                                        'rlUsers': serializeParam(
+                                          widget.rlUsers,
+                                          ParamType.String,
+                                        ),
+                                        'endDate': serializeParam(
+                                          _model.endDate,
+                                          ParamType.DateTime,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  },
+                            text: 'Далее',
+                            options: FFButtonOptions(
+                              width: double.infinity,
+                              height: 52.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  24.0, 0.0, 24.0, 0.0),
+                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: FlutterFlowTheme.of(context).primary,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .labelSmall
+                                  .override(
+                                    fontFamily: 'NTSomic',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryBackground,
+                                    letterSpacing: 0.0,
+                                    useGoogleFonts: false,
+                                  ),
+                              elevation: 0.0,
+                              borderSide: const BorderSide(
+                                width: 0.0,
+                              ),
+                              borderRadius: BorderRadius.circular(18.0),
+                              disabledColor:
+                                  FlutterFlowTheme.of(context).divider,
+                              disabledTextColor:
+                                  FlutterFlowTheme.of(context).white40,
+                            ),
+                            showLoadingIndicator: false,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

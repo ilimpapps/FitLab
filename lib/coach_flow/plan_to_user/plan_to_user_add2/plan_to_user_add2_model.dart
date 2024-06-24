@@ -30,11 +30,39 @@ class PlanToUserAdd2Model extends FlutterFlowModel<PlanToUserAdd2Widget> {
 
   bool isValidate = false;
 
+  List<CoachExercisesPickerStruct> coachExercisesPicker = [];
+  void addToCoachExercisesPicker(CoachExercisesPickerStruct item) =>
+      coachExercisesPicker.add(item);
+  void removeFromCoachExercisesPicker(CoachExercisesPickerStruct item) =>
+      coachExercisesPicker.remove(item);
+  void removeAtIndexFromCoachExercisesPicker(int index) =>
+      coachExercisesPicker.removeAt(index);
+  void insertAtIndexInCoachExercisesPicker(
+          int index, CoachExercisesPickerStruct item) =>
+      coachExercisesPicker.insert(index, item);
+  void updateCoachExercisesPickerAtIndex(
+          int index, Function(CoachExercisesPickerStruct) updateFn) =>
+      coachExercisesPicker[index] = updateFn(coachExercisesPicker[index]);
+
+  dynamic setsPlanListJson;
+
+  bool isLoad = false;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  // Stores action output result for [Backend Call - Query Rows] action in PlanToUserAdd2 widget.
+  List<ViewTemplatesTrainingsRow>? queryTemplatesTrainings;
+  // Stores action output result for [Backend Call - Query Rows] action in PlanToUserAdd2 widget.
+  List<ViewTemplatesTrainingsExercisesRow>? queryViewTemplateTrainingsExercises;
   // Model for Back component.
   late BackModel backModel;
+  // State field(s) for TemplateCheckbox widget.
+  bool? templateCheckboxValue;
+  // State field(s) for TemplateName widget.
+  FocusNode? templateNameFocusNode;
+  TextEditingController? templateNameTextController;
+  String? Function(BuildContext, String?)? templateNameTextControllerValidator;
   // Models for PlanToUserAdd2NameInput dynamic component.
   late FlutterFlowDynamicModels<PlanToUserAdd2NameInputModel>
       planToUserAdd2NameInputModels;
@@ -47,6 +75,10 @@ class PlanToUserAdd2Model extends FlutterFlowModel<PlanToUserAdd2Widget> {
   List<CoachExercisesPickerStruct>? bottomExerciseOutput;
   // Stores action output result for [Backend Call - Insert Row] action in Button widget.
   UsersTrainingsRow? usersTrainingsOutput;
+  // Stores action output result for [Backend Call - Insert Row] action in Button widget.
+  TemplatesTrainingsPlansRow? outputTemplatesTrainingsPlans;
+  // Stores action output result for [Backend Call - Insert Row] action in Button widget.
+  TemplatesTrainingsRow? usersTrainingsOutputTemplate;
 
   @override
   void initState(BuildContext context) {
@@ -61,6 +93,9 @@ class PlanToUserAdd2Model extends FlutterFlowModel<PlanToUserAdd2Widget> {
   void dispose() {
     unfocusNode.dispose();
     backModel.dispose();
+    templateNameFocusNode?.dispose();
+    templateNameTextController?.dispose();
+
     planToUserAdd2NameInputModels.dispose();
     planToUserAdd2DropdownModels.dispose();
   }

@@ -13,6 +13,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'my_progress_chart_model.dart';
 export 'my_progress_chart_model.dart';
 
@@ -88,6 +89,8 @@ class _MyProgressChartWidgetState extends State<MyProgressChartWidget>
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -158,78 +161,82 @@ class _MyProgressChartWidgetState extends State<MyProgressChartWidget>
                               ),
                             ),
                           ),
-                          Builder(
-                            builder: (context) => InkWell(
-                              splashColor: Colors.transparent,
-                              focusColor: Colors.transparent,
-                              hoverColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onTap: () async {
-                                var shouldSetState = false;
-                                await showDialog(
-                                  context: context,
-                                  builder: (dialogContext) {
-                                    return Dialog(
-                                      elevation: 0,
-                                      insetPadding: EdgeInsets.zero,
-                                      backgroundColor: Colors.transparent,
-                                      alignment: const AlignmentDirectional(0.0, 0.0)
-                                          .resolve(Directionality.of(context)),
-                                      child: GestureDetector(
-                                        onTap: () => _model
-                                                .unfocusNode.canRequestFocus
-                                            ? FocusScope.of(context)
-                                                .requestFocus(
-                                                    _model.unfocusNode)
-                                            : FocusScope.of(context).unfocus(),
-                                        child: DialogMeasurementDeleteWidget(
-                                          measurement: valueOrDefault<String>(
-                                            _model.queryUsersMeasurements?.first
-                                                .name,
-                                            'null',
+                          if (!FFAppState().isCoach)
+                            Builder(
+                              builder: (context) => InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  var shouldSetState = false;
+                                  await showDialog(
+                                    context: context,
+                                    builder: (dialogContext) {
+                                      return Dialog(
+                                        elevation: 0,
+                                        insetPadding: EdgeInsets.zero,
+                                        backgroundColor: Colors.transparent,
+                                        alignment:
+                                            const AlignmentDirectional(0.0, 0.0)
+                                                .resolve(
+                                                    Directionality.of(context)),
+                                        child: GestureDetector(
+                                          onTap: () => _model
+                                                  .unfocusNode.canRequestFocus
+                                              ? FocusScope.of(context)
+                                                  .requestFocus(
+                                                      _model.unfocusNode)
+                                              : FocusScope.of(context)
+                                                  .unfocus(),
+                                          child: DialogMeasurementDeleteWidget(
+                                            measurement: valueOrDefault<String>(
+                                              _model.queryUsersMeasurements
+                                                  ?.first.name,
+                                              'null',
+                                            ),
                                           ),
                                         ),
+                                      );
+                                    },
+                                  ).then((value) => safeSetState(
+                                      () => _model.deleteOutput = value));
+
+                                  shouldSetState = true;
+                                  if (_model.deleteOutput!) {
+                                    await UsersMeasurementsTable().delete(
+                                      matchingRows: (rows) => rows.eq(
+                                        'id',
+                                        widget.rlUsersMeasurements,
                                       ),
                                     );
-                                  },
-                                ).then((value) => safeSetState(
-                                    () => _model.deleteOutput = value));
+                                    context.safePop();
+                                  } else {
+                                    if (shouldSetState) setState(() {});
+                                    return;
+                                  }
 
-                                shouldSetState = true;
-                                if (_model.deleteOutput!) {
-                                  await UsersMeasurementsTable().delete(
-                                    matchingRows: (rows) => rows.eq(
-                                      'id',
-                                      widget.rlUsersMeasurements,
-                                    ),
-                                  );
-                                  context.safePop();
-                                } else {
                                   if (shouldSetState) setState(() {});
-                                  return;
-                                }
-
-                                if (shouldSetState) setState(() {});
-                              },
-                              child: Container(
-                                width: 56.0,
-                                height: 56.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context).error,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Align(
-                                  alignment: const AlignmentDirectional(0.0, 0.0),
-                                  child: Icon(
-                                    FFIcons.ktrashCan,
-                                    color: FlutterFlowTheme.of(context)
-                                        .primaryText,
-                                    size: 24.0,
+                                },
+                                child: Container(
+                                  width: 56.0,
+                                  height: 56.0,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context).error,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Align(
+                                    alignment: const AlignmentDirectional(0.0, 0.0),
+                                    child: Icon(
+                                      FFIcons.ktrashCan,
+                                      color: FlutterFlowTheme.of(context)
+                                          .primaryText,
+                                      size: 24.0,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -340,88 +347,93 @@ class _MyProgressChartWidgetState extends State<MyProgressChartWidget>
                 ),
               ),
             ),
-            Align(
-              alignment: const AlignmentDirectional(0.0, 1.0),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 50.0),
-                child: FFButtonWidget(
-                  onPressed: () async {
-                    var shouldSetState = false;
-                    await showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) {
-                        return GestureDetector(
-                          onTap: () => _model.unfocusNode.canRequestFocus
-                              ? FocusScope.of(context)
-                                  .requestFocus(_model.unfocusNode)
-                              : FocusScope.of(context).unfocus(),
-                          child: Padding(
-                            padding: MediaQuery.viewInsetsOf(context),
-                            child: BottomMyProgressAddWidget(
-                              usersMeasurementsRow:
-                                  _model.queryUsersMeasurements!.last,
+            if (!FFAppState().isCoach)
+              Align(
+                alignment: const AlignmentDirectional(0.0, 1.0),
+                child: Padding(
+                  padding:
+                      const EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 50.0),
+                  child: FFButtonWidget(
+                    onPressed: () async {
+                      var shouldSetState = false;
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: () => _model.unfocusNode.canRequestFocus
+                                ? FocusScope.of(context)
+                                    .requestFocus(_model.unfocusNode)
+                                : FocusScope.of(context).unfocus(),
+                            child: Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: BottomMyProgressAddWidget(
+                                usersMeasurementsRow:
+                                    _model.queryUsersMeasurements!.last,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ).then((value) =>
-                        safeSetState(() => _model.bottomOutput = value));
-
-                    shouldSetState = true;
-                    if (_model.bottomOutput!) {
-                      if (Navigator.of(context).canPop()) {
-                        context.pop();
-                      }
-                      context.pushNamed(
-                        'MyProgressChart',
-                        queryParameters: {
-                          'rlUsersMeasurements': serializeParam(
-                            widget.rlUsersMeasurements,
-                            ParamType.int,
-                          ),
-                        }.withoutNulls,
-                        extra: <String, dynamic>{
-                          kTransitionInfoKey: const TransitionInfo(
-                            hasTransition: true,
-                            transitionType: PageTransitionType.fade,
-                            duration: Duration(milliseconds: 0),
-                          ),
+                          );
                         },
-                      );
-                    } else {
-                      if (shouldSetState) setState(() {});
-                      return;
-                    }
+                      ).then((value) =>
+                          safeSetState(() => _model.bottomOutput = value));
 
-                    if (shouldSetState) setState(() {});
-                  },
-                  text: 'Добавить значение',
-                  options: FFButtonOptions(
-                    width: double.infinity,
-                    height: 52.0,
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                    iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: FlutterFlowTheme.of(context).primary,
-                    textStyle: FlutterFlowTheme.of(context).labelSmall.override(
-                          fontFamily: 'NTSomic',
-                          color: FlutterFlowTheme.of(context).primaryBackground,
-                          letterSpacing: 0.0,
-                          useGoogleFonts: false,
-                        ),
-                    elevation: 0.0,
-                    borderSide: const BorderSide(
-                      width: 0.0,
+                      shouldSetState = true;
+                      if (_model.bottomOutput!) {
+                        if (Navigator.of(context).canPop()) {
+                          context.pop();
+                        }
+                        context.pushNamed(
+                          'MyProgressChart',
+                          queryParameters: {
+                            'rlUsersMeasurements': serializeParam(
+                              widget.rlUsersMeasurements,
+                              ParamType.int,
+                            ),
+                          }.withoutNulls,
+                          extra: <String, dynamic>{
+                            kTransitionInfoKey: const TransitionInfo(
+                              hasTransition: true,
+                              transitionType: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 0),
+                            ),
+                          },
+                        );
+                      } else {
+                        if (shouldSetState) setState(() {});
+                        return;
+                      }
+
+                      if (shouldSetState) setState(() {});
+                    },
+                    text: 'Добавить значение',
+                    options: FFButtonOptions(
+                      width: double.infinity,
+                      height: 52.0,
+                      padding:
+                          const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
+                      iconPadding:
+                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: FlutterFlowTheme.of(context).primary,
+                      textStyle: FlutterFlowTheme.of(context)
+                          .labelSmall
+                          .override(
+                            fontFamily: 'NTSomic',
+                            color:
+                                FlutterFlowTheme.of(context).primaryBackground,
+                            letterSpacing: 0.0,
+                            useGoogleFonts: false,
+                          ),
+                      elevation: 0.0,
+                      borderSide: const BorderSide(
+                        width: 0.0,
+                      ),
+                      borderRadius: BorderRadius.circular(18.0),
                     ),
-                    borderRadius: BorderRadius.circular(18.0),
+                    showLoadingIndicator: false,
                   ),
-                  showLoadingIndicator: false,
                 ),
               ),
-            ),
           ],
         ),
       ),

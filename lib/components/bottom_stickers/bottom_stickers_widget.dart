@@ -87,17 +87,26 @@ class _BottomStickersWidgetState extends State<BottomStickersWidget> {
                             lineHeight: 1.1,
                           ),
                     ),
-                    Container(
-                      width: 24.0,
-                      height: 24.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).white8,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        FFIcons.kclose3,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 16.0,
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 24.0,
+                        height: 24.0,
+                        decoration: BoxDecoration(
+                          color: FlutterFlowTheme.of(context).white8,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          FFIcons.kclose3,
+                          color: FlutterFlowTheme.of(context).primaryText,
+                          size: 16.0,
+                        ),
                       ),
                     ),
                   ],

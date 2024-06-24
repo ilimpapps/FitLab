@@ -217,42 +217,42 @@ dynamic deserializeParam<T>(
         switch (T) {
           case PassedTrainingsRow:
             return PassedTrainingsRow(data);
+          case ViewTemplatesTrainingsExercisesRow:
+            return ViewTemplatesTrainingsExercisesRow(data);
           case ChatsMessagesRow:
             return ChatsMessagesRow(data);
           case ViewPlanToUserRow:
             return ViewPlanToUserRow(data);
+          case ViewTemplatesTrainingsPlansRow:
+            return ViewTemplatesTrainingsPlansRow(data);
           case ChatsRow:
             return ChatsRow(data);
+          case TemplatesTrainingsPlansRow:
+            return TemplatesTrainingsPlansRow(data);
           case StickersRow:
             return StickersRow(data);
           case ExercisesRow:
             return ExercisesRow(data);
+          case TemplatesTrainingsExercisesRow:
+            return TemplatesTrainingsExercisesRow(data);
           case ViewUsersTrainingsRow:
             return ViewUsersTrainingsRow(data);
-          case CoachTrainingsExercisesRow:
-            return CoachTrainingsExercisesRow(data);
+          case ViewTemplatesTrainingsRow:
+            return ViewTemplatesTrainingsRow(data);
+          case TemplatesTrainingsRow:
+            return TemplatesTrainingsRow(data);
           case UsersTrainingsRow:
             return UsersTrainingsRow(data);
-          case ViewCoachTrainingsRow:
-            return ViewCoachTrainingsRow(data);
           case PhotoProgressRow:
             return PhotoProgressRow(data);
           case ExercisesMuscleRow:
             return ExercisesMuscleRow(data);
-          case PlanTemplateRow:
-            return PlanTemplateRow(data);
           case UsersMeasurementsRow:
             return UsersMeasurementsRow(data);
           case UsersTrainingsExercisesRow:
             return UsersTrainingsExercisesRow(data);
-          case CoachTrainingsTemplateRow:
-            return CoachTrainingsTemplateRow(data);
-          case CoachTrainingsRow:
-            return CoachTrainingsRow(data);
           case UsersRow:
             return UsersRow(data);
-          case ExercisesTemplateRow:
-            return ExercisesTemplateRow(data);
           case ViewChatsMessagesRow:
             return ViewChatsMessagesRow(data);
           default:

@@ -96,6 +96,7 @@ class _PlanCreationByHandsItemWidgetState
                               },
                             ),
                             autofocus: false,
+                            textInputAction: TextInputAction.done,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelStyle: FlutterFlowTheme.of(context)
@@ -157,6 +158,7 @@ class _PlanCreationByHandsItemWidgetState
                                       useGoogleFonts: false,
                                       lineHeight: 1.37,
                                     ),
+                            keyboardType: TextInputType.number,
                             validator: _model.repsInputTextControllerValidator
                                 .asValidator(context),
                             inputFormatters: [
@@ -208,6 +210,7 @@ class _PlanCreationByHandsItemWidgetState
                                 },
                               ),
                               autofocus: false,
+                              textInputAction: TextInputAction.done,
                               obscureText: false,
                               decoration: InputDecoration(
                                 labelStyle: FlutterFlowTheme.of(context)
@@ -270,6 +273,7 @@ class _PlanCreationByHandsItemWidgetState
                                     useGoogleFonts: false,
                                     lineHeight: 1.37,
                                   ),
+                              keyboardType: TextInputType.number,
                               validator: _model
                                   .weightKgInputTextControllerValidator
                                   .asValidator(context),

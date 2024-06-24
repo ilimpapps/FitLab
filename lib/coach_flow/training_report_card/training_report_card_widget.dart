@@ -169,8 +169,7 @@ class _TrainingReportCardWidgetState extends State<TrainingReportCardWidget> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Builder(
                       builder: (context) {
                         final sets = SetsFactListStruct.maybeFromMap(
@@ -186,67 +185,73 @@ class _TrainingReportCardWidgetState extends State<TrainingReportCardWidget> {
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            '${(setsIndex + 1).toString()} подход',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily: 'NTSomic',
-                                                  letterSpacing: 0.0,
-                                                  useGoogleFonts: false,
-                                                ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 0.0, 0.0),
-                                            child: Text(
-                                              '${valueOrDefault<String>(
-                                                setsItem.reps.toString(),
-                                                'null',
-                                              )} раз • ${valueOrDefault<String>(
-                                                setsItem.kg.toString(),
-                                                'null',
-                                              )} кг',
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 8.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '${(setsIndex + 1).toString()} подход',
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodySmall
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily: 'NTSomic',
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .secondaryText,
                                                         letterSpacing: 0.0,
                                                         useGoogleFonts: false,
                                                       ),
                                             ),
-                                          ),
-                                        ],
+                                            Padding(
+                                              padding: const EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 4.0, 0.0, 0.0),
+                                              child: Text(
+                                                '${valueOrDefault<String>(
+                                                  setsItem.reps.toString(),
+                                                  'null',
+                                                )} раз • ${valueOrDefault<String>(
+                                                  setsItem.kg.toString(),
+                                                  'null',
+                                                )} кг',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodySmall
+                                                        .override(
+                                                          fontFamily: 'NTSomic',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .secondaryText,
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: false,
+                                                        ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 8.0, 0.0, 0.0),
-                                  child: Container(
+                                if (setsIndex !=
+                                    functions.subtractOne(
+                                        SetsPlanListStruct.maybeFromMap(widget
+                                                .userTrainingExerciese
+                                                ?.setsPlan)
+                                            ?.setsPlan
+                                            .length))
+                                  Container(
                                     width: double.infinity,
                                     height: 1.0,
                                     decoration: const BoxDecoration(
                                       color: Color(0x1EFDFDFD),
                                     ),
                                   ),
-                                ),
                               ],
                             );
                           }),

@@ -590,3 +590,37 @@ bool searchStringInList(
     return false;
   }
 }
+
+String getApproachWord(int number) {
+  // Получаем последнюю цифру и предпоследнюю цифру для проверки исключений
+  int lastDigit = number % 10;
+  int lastTwoDigits = number % 100;
+
+  // Проверяем на исключения (числа 11-14)
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+    return 'подходов';
+  }
+
+  // Возвращаем форму слова в зависимости от последней цифры
+  switch (lastDigit) {
+    case 1:
+      return 'подход';
+    case 2:
+    case 3:
+    case 4:
+      return 'подхода';
+    default:
+      return 'подходов';
+  }
+}
+
+DateTime? dateTimeToEndDate(DateTime? dateTime) {
+  return DateTime(dateTime!.year, dateTime!.month, dateTime!.day, 23, 59);
+}
+
+bool? isEven(int? number) {
+  if (number == null) {
+    return false;
+  }
+  return number! % 2 == 0;
+}

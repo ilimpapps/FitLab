@@ -2,6 +2,7 @@ import '/backend/supabase/supabase.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'chat_item_model.dart';
 export 'chat_item_model.dart';
@@ -79,8 +80,10 @@ class _ChatItemWidgetState extends State<ChatItemWidget> {
                       visible: widget.photo != null && widget.photo != '',
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          widget.photo!,
+                        child: CachedNetworkImage(
+                          fadeInDuration: const Duration(milliseconds: 300),
+                          fadeOutDuration: const Duration(milliseconds: 300),
+                          imageUrl: widget.photo!,
                           width: 56.0,
                           height: 56.0,
                           fit: BoxFit.cover,

@@ -86,6 +86,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Home',
           path: '/home',
+          requireAuth: true,
           builder: (context, params) => const HomeWidget(),
         ),
         FFRoute(
@@ -106,16 +107,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'FillUserInfo',
           path: '/fillUserInfo',
+          requireAuth: true,
           builder: (context, params) => const FillUserInfoWidget(),
         ),
         FFRoute(
           name: 'ProfileInfo',
           path: '/profileInfo',
+          requireAuth: true,
           builder: (context, params) => const ProfileInfoWidget(),
         ),
         FFRoute(
           name: 'Exercices',
           path: '/exercices',
+          requireAuth: true,
           builder: (context, params) => ExercicesWidget(
             rlCoach: params.getParam(
               'rlCoach',
@@ -130,6 +134,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ProfileEdit',
           path: '/profileEdit',
+          requireAuth: true,
           builder: (context, params) => const ProfileEditWidget(),
         ),
         FFRoute(
@@ -150,6 +155,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ChatsMessages',
           path: '/chatsMessages',
+          requireAuth: true,
           builder: (context, params) => ChatsMessagesWidget(
             chat: params.getParam<ChatsRow>(
               'chat',
@@ -180,11 +186,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ProfileApp',
           path: '/profileApp',
+          requireAuth: true,
           builder: (context, params) => const ProfileAppWidget(),
         ),
         FFRoute(
           name: 'Training',
           path: '/training',
+          requireAuth: true,
           builder: (context, params) => TrainingWidget(
             rlUsersTrainings: params.getParam(
               'rlUsersTrainings',
@@ -203,11 +211,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Chats',
           path: '/chats',
+          requireAuth: true,
           builder: (context, params) => const ChatsWidget(),
         ),
         FFRoute(
           name: 'ExercisesDetails',
           path: '/exercisesDetails',
+          requireAuth: true,
           builder: (context, params) => ExercisesDetailsWidget(
             rlExercises: params.getParam(
               'rlExercises',
@@ -226,6 +236,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'DiaryPhoto',
           path: '/diaryPhoto',
+          requireAuth: true,
           builder: (context, params) => DiaryPhotoWidget(
             rlUser: params.getParam(
               'rlUser',
@@ -236,6 +247,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'PhotoView',
           path: '/photoView',
+          requireAuth: true,
           builder: (context, params) => PhotoViewWidget(
             progressPhoto: params.getParam<PhotoProgressRow>(
               'progressPhoto',
@@ -246,6 +258,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'MyProgress',
           path: '/myProgress',
+          requireAuth: true,
           builder: (context, params) => MyProgressWidget(
             rlUser: params.getParam(
               'rlUser',
@@ -256,6 +269,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'MyProgressAdd',
           path: '/myProgressAdd',
+          requireAuth: true,
           builder: (context, params) => MyProgressAddWidget(
             type: params.getParam(
               'type',
@@ -266,6 +280,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'MyProgressChart',
           path: '/myProgressChart',
+          requireAuth: true,
           builder: (context, params) => MyProgressChartWidget(
             rlUsersMeasurements: params.getParam(
               'rlUsersMeasurements',
@@ -276,21 +291,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Achievments',
           path: '/achievments',
+          requireAuth: true,
           builder: (context, params) => const AchievmentsWidget(),
         ),
         FFRoute(
-          name: 'CoachList',
-          path: '/coachList',
-          builder: (context, params) => const CoachListWidget(),
+          name: 'CoachesList',
+          path: '/coachesList',
+          requireAuth: true,
+          builder: (context, params) => const CoachesListWidget(),
         ),
         FFRoute(
           name: 'ClientsList',
           path: '/clientsList',
+          requireAuth: true,
           builder: (context, params) => const ClientsListWidget(),
         ),
         FFRoute(
           name: 'CoachInfo',
           path: '/coachInfo',
+          requireAuth: true,
           builder: (context, params) => CoachInfoWidget(
             coachRow: params.getParam<UsersRow>(
               'coachRow',
@@ -301,68 +320,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'PlanToUser',
           path: '/planToUser',
+          requireAuth: true,
           builder: (context, params) => const PlanToUserWidget(),
-        ),
-        FFRoute(
-          name: 'TrainingTemplates',
-          path: '/trainingTemplates',
-          builder: (context, params) => const TrainingTemplatesWidget(),
-        ),
-        FFRoute(
-          name: 'TrainingTemplatesAdd1',
-          path: '/trainingTemplatesAdd1',
-          builder: (context, params) => const TrainingTemplatesAdd1Widget(),
-        ),
-        FFRoute(
-          name: 'TrainingTemplatesAdd2',
-          path: '/trainingTemplatesAdd2',
-          builder: (context, params) => TrainingTemplatesAdd2Widget(
-            name: params.getParam(
-              'name',
-              ParamType.String,
-            ),
-            difficulty: params.getParam(
-              'difficulty',
-              ParamType.String,
-            ),
-          ),
-        ),
-        FFRoute(
-          name: 'PlanTemplates',
-          path: '/planTemplates',
-          builder: (context, params) => const PlanTemplatesWidget(),
-        ),
-        FFRoute(
-          name: 'PlanTemplatesAdd1',
-          path: '/planTemplatesAdd1',
-          builder: (context, params) => const PlanTemplatesAdd1Widget(),
-        ),
-        FFRoute(
-          name: 'PlanTemplatesAdd2',
-          path: '/planTemplatesAdd2',
-          builder: (context, params) => PlanTemplatesAdd2Widget(
-            name: params.getParam(
-              'name',
-              ParamType.String,
-            ),
-            trainingCount: params.getParam(
-              'trainingCount',
-              ParamType.int,
-            ),
-            difficulty: params.getParam(
-              'difficulty',
-              ParamType.String,
-            ),
-            gender: params.getParam<String>(
-              'gender',
-              ParamType.String,
-              isList: true,
-            ),
-          ),
         ),
         FFRoute(
           name: 'PlanView',
           path: '/planView',
+          requireAuth: true,
           builder: (context, params) => PlanViewWidget(
             rlUsers: params.getParam(
               'rlUsers',
@@ -373,21 +337,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'EditTraining',
           path: '/editTraining',
+          requireAuth: true,
           builder: (context, params) => const EditTrainingWidget(),
         ),
         FFRoute(
           name: 'EditPlan1stStep',
           path: '/editPlan1stStep',
+          requireAuth: true,
           builder: (context, params) => const EditPlan1stStepWidget(),
         ),
         FFRoute(
           name: 'EditPlan2ndStep',
           path: '/editPlan2ndStep',
+          requireAuth: true,
           builder: (context, params) => const EditPlan2ndStepWidget(),
         ),
         FFRoute(
           name: 'PlanToUserAdd1',
           path: '/planToUserAdd1',
+          requireAuth: true,
           builder: (context, params) => PlanToUserAdd1Widget(
             usersName: params.getParam(
               'usersName',
@@ -410,18 +378,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'PlanToUserAdd2',
           path: '/planToUserAdd2',
+          requireAuth: true,
           builder: (context, params) => PlanToUserAdd2Widget(
             trainingsCount: params.getParam(
               'trainingsCount',
               ParamType.int,
-            ),
-            usersName: params.getParam(
-              'usersName',
-              ParamType.String,
-            ),
-            usersSurname: params.getParam(
-              'usersSurname',
-              ParamType.String,
             ),
             rlUsers: params.getParam(
               'rlUsers',
@@ -431,11 +392,25 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               'endDate',
               ParamType.DateTime,
             ),
+            viewTemplatesTrainingsPlans:
+                params.getParam<ViewTemplatesTrainingsPlansRow>(
+              'viewTemplatesTrainingsPlans',
+              ParamType.SupabaseRow,
+            ),
+            usersName: params.getParam(
+              'usersName',
+              ParamType.String,
+            ),
+            usersSurname: params.getParam(
+              'usersSurname',
+              ParamType.String,
+            ),
           ),
         ),
         FFRoute(
           name: 'ClientProfileView',
           path: '/clientProfileView',
+          requireAuth: true,
           builder: (context, params) => ClientProfileViewWidget(
             userRow: params.getParam<UsersRow>(
               'userRow',
@@ -446,6 +421,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'TrainingReport',
           path: '/trainingReport',
+          requireAuth: true,
           builder: (context, params) => TrainingReportWidget(
             passedTraining: params.getParam<PassedTrainingsRow>(
               'passedTraining',
@@ -454,34 +430,63 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'TrainingTemplatesEdit',
-          path: '/trainingTemplatesEdit',
-          builder: (context, params) => TrainingTemplatesEditWidget(
-            exerciesesList: params.getParam<CoachTrainingsExercisesRow>(
-              'exerciesesList',
-              ParamType.SupabaseRow,
-              isList: true,
-            ),
-            idTraning: params.getParam(
-              'idTraning',
-              ParamType.int,
-            ),
-          ),
-        ),
-        FFRoute(
           name: 'Archive',
           path: '/archive',
+          requireAuth: true,
           builder: (context, params) => const ArchiveWidget(),
         ),
         FFRoute(
           name: 'TrainingsReportsForCoach',
           path: '/trainingsReportsForCoach',
+          requireAuth: true,
           builder: (context, params) => TrainingsReportsForCoachWidget(
             rlClient: params.getParam(
               'rlClient',
               ParamType.String,
             ),
           ),
+        ),
+        FFRoute(
+          name: 'TemplatesDetails',
+          path: '/templatesDetails',
+          requireAuth: true,
+          builder: (context, params) => TemplatesDetailsWidget(
+            viewTemplatesTrainingsRow:
+                params.getParam<ViewTemplatesTrainingsRow>(
+              'viewTemplatesTrainingsRow',
+              ParamType.SupabaseRow,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'TemplatesPlans',
+          path: '/templatesPlans',
+          requireAuth: true,
+          builder: (context, params) => const TemplatesPlansWidget(),
+        ),
+        FFRoute(
+          name: 'TemplatesTrainings',
+          path: '/templatesTrainings',
+          requireAuth: true,
+          builder: (context, params) => TemplatesTrainingsWidget(
+            viewTemplatesTrainingsPlans:
+                params.getParam<ViewTemplatesTrainingsPlansRow>(
+              'viewTemplatesTrainingsPlans',
+              ParamType.SupabaseRow,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'Advices',
+          path: '/advices',
+          requireAuth: true,
+          builder: (context, params) => const AdvicesWidget(),
+        ),
+        FFRoute(
+          name: 'Podbadrivaniye',
+          path: '/podbadrivaniye',
+          requireAuth: true,
+          builder: (context, params) => const PodbadrivaniyeWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
       observers: [routeObserver],

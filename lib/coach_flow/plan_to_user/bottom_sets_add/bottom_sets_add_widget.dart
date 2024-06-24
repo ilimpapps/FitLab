@@ -89,49 +89,54 @@ class _BottomSetsAddWidgetState extends State<BottomSetsAddWidget> {
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          FFIcons.ktrashCan,
-                          color: FlutterFlowTheme.of(context).error,
-                          size: 24.0,
-                        ),
                         Expanded(
                           child: Align(
                             alignment: const AlignmentDirectional(0.0, 0.0),
-                            child: Text(
-                              valueOrDefault<String>(
-                                widget.exerciseName,
-                                'Упражнение',
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  32.0, 0.0, 0.0, 0.0),
+                              child: Text(
+                                valueOrDefault<String>(
+                                  widget.exerciseName,
+                                  'Упражнение',
+                                ),
+                                textAlign: TextAlign.center,
+                                style: FlutterFlowTheme.of(context)
+                                    .labelMedium
+                                    .override(
+                                      fontFamily: 'NTSomic',
+                                      letterSpacing: 0.0,
+                                      useGoogleFonts: false,
+                                      lineHeight: 1.1,
+                                    ),
                               ),
-                              style: FlutterFlowTheme.of(context)
-                                  .labelMedium
-                                  .override(
-                                    fontFamily: 'NTSomic',
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts: false,
-                                    lineHeight: 1.1,
-                                  ),
                             ),
                           ),
                         ),
-                        Container(
-                          width: 32.0,
-                          height: 32.0,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context).white8,
-                            shape: BoxShape.circle,
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () async {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              FFIcons.kclose3,
-                              color: FlutterFlowTheme.of(context).secondaryText,
-                              size: 16.0,
+                        Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              4.0, 0.0, 0.0, 0.0),
+                          child: Container(
+                            width: 32.0,
+                            height: 32.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).white8,
+                              shape: BoxShape.circle,
+                            ),
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                FFIcons.kclose3,
+                                color:
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                size: 16.0,
+                              ),
                             ),
                           ),
                         ),

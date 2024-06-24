@@ -53,20 +53,15 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(
+    return Align(
+      alignment: AlignmentDirectional(
           valueOrDefault<double>(
-            widget.isMyMessage ? 32.0 : 0.0,
-            0.0,
-          ),
-          0.0,
-          valueOrDefault<double>(
-            widget.isMyMessage ? 0.0 : 32.0,
+            widget.isMyMessage ? 1.0 : -1.0,
             0.0,
           ),
           0.0),
       child: Row(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!widget.isMyMessage)
@@ -105,9 +100,8 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                 ),
               ),
             ),
-          Expanded(
+          Flexible(
             child: Container(
-              width: double.infinity,
               decoration: BoxDecoration(
                 color: () {
                   if (widget.chatsMessagesRow?.sticker != null &&
@@ -141,7 +135,7 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                     if (widget.chatsMessagesRow?.sticker == null ||
                         widget.chatsMessagesRow?.sticker == '')
                       Row(
-                        mainAxisSize: MainAxisSize.max,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             valueOrDefault<String>(
@@ -182,24 +176,34 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                           ),
                         ],
                       ),
-                    if (widget.chatsMessagesRow?.message != null &&
-                        widget.chatsMessagesRow?.message != '')
-                      Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
-                        child: Text(
-                          valueOrDefault<String>(
-                            widget.chatsMessagesRow?.message,
-                            'null',
-                          ),
-                          style:
-                              FlutterFlowTheme.of(context).bodyLarge.override(
-                                    fontFamily: 'NTSomic',
-                                    letterSpacing: 0.0,
-                                    useGoogleFonts: false,
+                    Flexible(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.chatsMessagesRow?.message != null &&
+                              widget.chatsMessagesRow?.message != '')
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 4.0, 0.0, 0.0),
+                                child: Text(
+                                  valueOrDefault<String>(
+                                    widget.chatsMessagesRow?.message,
+                                    'null',
                                   ),
-                        ),
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyLarge
+                                      .override(
+                                        fontFamily: 'NTSomic',
+                                        letterSpacing: 0.0,
+                                        useGoogleFonts: false,
+                                      ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
+                    ),
                     if (widget.chatsMessagesRow?.sticker != null &&
                         widget.chatsMessagesRow?.sticker != '')
                       Padding(
@@ -223,7 +227,7 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                         padding:
                             const EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(0.0),
+                          borderRadius: BorderRadius.circular(16.0),
                           child: CachedNetworkImage(
                             fadeInDuration: const Duration(milliseconds: 200),
                             fadeOutDuration: const Duration(milliseconds: 200),
@@ -285,7 +289,6 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                             );
                           },
                           child: Container(
-                            width: double.infinity,
                             decoration: BoxDecoration(
                               color: FlutterFlowTheme.of(context).secondary,
                               borderRadius: BorderRadius.circular(8.0),
@@ -302,7 +305,7 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                                   padding: const EdgeInsetsDirectional.fromSTEB(
                                       8.0, 4.0, 8.0, 4.0),
                                   child: Column(
-                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -397,7 +400,6 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                                 );
                               },
                               child: Container(
-                                width: double.infinity,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context).secondary,
                                   borderRadius: BorderRadius.circular(8.0),
@@ -414,7 +416,7 @@ class _ChatsMessageItemWidgetState extends State<ChatsMessageItemWidget> {
                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                           8.0, 4.0, 8.0, 4.0),
                                       child: Column(
-                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [

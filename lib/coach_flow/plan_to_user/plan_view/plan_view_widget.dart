@@ -1,9 +1,11 @@
 import '/backend/supabase/supabase.dart';
 import '/coach_flow/plan_view/training_view_card/training_view_card_widget.dart';
 import '/components/back/back_widget.dart';
+import '/components/bottom_plan_delete/bottom_plan_delete_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -91,8 +93,8 @@ class _PlanViewWidgetState extends State<PlanViewWidget>
                 '',
               );
             }
-            List<ViewUsersTrainingsRow> containerViewUsersTrainingsRowList =
-                snapshot.data!;
+            List<ViewUsersTrainingsRow>
+                viewUsersTrainingsViewUsersTrainingsRowList = snapshot.data!;
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
@@ -228,7 +230,7 @@ class _PlanViewWidgetState extends State<PlanViewWidget>
                                               fadeOutDuration:
                                                   const Duration(milliseconds: 200),
                                               imageUrl: valueOrDefault<String>(
-                                                containerViewUsersTrainingsRowList
+                                                viewUsersTrainingsViewUsersTrainingsRowList
                                                     .first.usersPhotoUrl,
                                                 'null',
                                               ),
@@ -244,11 +246,11 @@ class _PlanViewWidgetState extends State<PlanViewWidget>
                                                   8.0, 0.0, 0.0, 0.0),
                                           child: Text(
                                             '${valueOrDefault<String>(
-                                              containerViewUsersTrainingsRowList
+                                              viewUsersTrainingsViewUsersTrainingsRowList
                                                   .first.usersName,
                                               'null',
                                             )} ${valueOrDefault<String>(
-                                              containerViewUsersTrainingsRowList
+                                              viewUsersTrainingsViewUsersTrainingsRowList
                                                   .first.usersSurname,
                                               'null',
                                             )}',
@@ -269,118 +271,189 @@ class _PlanViewWidgetState extends State<PlanViewWidget>
                                   Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 28.0, 0.0, 0.0),
-                                    child: Container(
-                                      decoration: const BoxDecoration(),
-                                      child: Builder(
-                                        builder: (context) {
-                                          final trainings =
-                                              containerViewUsersTrainingsRowList
-                                                  .toList();
-                                          return ListView.separated(
-                                            padding: EdgeInsets.zero,
-                                            primary: false,
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: trainings.length,
-                                            separatorBuilder: (_, __) =>
-                                                const SizedBox(height: 24.0),
-                                            itemBuilder:
-                                                (context, trainingsIndex) {
-                                              final trainingsItem =
-                                                  trainings[trainingsIndex];
-                                              return Container(
-                                                decoration: const BoxDecoration(),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      valueOrDefault<String>(
-                                                        functions
-                                                            .dateTimeCapsWeekday(
-                                                                trainingsItem
-                                                                    .weekday),
-                                                        'null',
-                                                      ),
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyMedium
-                                                          .override(
-                                                            fontFamily:
-                                                                'NTSomic',
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .white40,
-                                                            letterSpacing: 0.0,
-                                                            useGoogleFonts:
-                                                                false,
-                                                            lineHeight: 1.28,
-                                                          ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        final trainings =
+                                            viewUsersTrainingsViewUsersTrainingsRowList
+                                                .toList();
+                                        return ListView.separated(
+                                          padding: EdgeInsets.zero,
+                                          primary: false,
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: trainings.length,
+                                          separatorBuilder: (_, __) =>
+                                              const SizedBox(height: 24.0),
+                                          itemBuilder:
+                                              (context, trainingsIndex) {
+                                            final trainingsItem =
+                                                trainings[trainingsIndex];
+                                            return Container(
+                                              decoration: const BoxDecoration(),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    valueOrDefault<String>(
+                                                      functions
+                                                          .dateTimeCapsWeekday(
+                                                              trainingsItem
+                                                                  .weekday),
+                                                      'null',
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  0.0,
-                                                                  8.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: InkWell(
-                                                        splashColor:
-                                                            Colors.transparent,
-                                                        focusColor:
-                                                            Colors.transparent,
-                                                        hoverColor:
-                                                            Colors.transparent,
-                                                        highlightColor:
-                                                            Colors.transparent,
-                                                        onTap: () async {
-                                                          context.pushNamed(
-                                                            'Training',
-                                                            queryParameters: {
-                                                              'rlUsersTrainings':
-                                                                  serializeParam(
-                                                                trainingsItem
-                                                                    .id,
-                                                                ParamType.int,
-                                                              ),
-                                                              'isCoachView':
-                                                                  serializeParam(
-                                                                true,
-                                                                ParamType.bool,
-                                                              ),
-                                                            }.withoutNulls,
-                                                          );
-                                                        },
-                                                        child:
-                                                            TrainingViewCardWidget(
-                                                          key: Key(
-                                                              'Keytg2_${trainingsIndex}_of_${trainings.length}'),
-                                                          name: valueOrDefault<
-                                                              String>(
-                                                            trainingsItem.name,
-                                                            'null',
-                                                          ),
-                                                          exerciesesCount:
-                                                              valueOrDefault<
-                                                                  String>(
-                                                            functions.getExerciseWord(
-                                                                trainingsItem
-                                                                    .exercisesCount!),
-                                                            'null',
-                                                          ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily: 'NTSomic',
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .white40,
+                                                          letterSpacing: 0.0,
+                                                          useGoogleFonts: false,
+                                                          lineHeight: 1.28,
+                                                        ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsetsDirectional
+                                                            .fromSTEB(0.0, 8.0,
+                                                                0.0, 0.0),
+                                                    child: InkWell(
+                                                      splashColor:
+                                                          Colors.transparent,
+                                                      focusColor:
+                                                          Colors.transparent,
+                                                      hoverColor:
+                                                          Colors.transparent,
+                                                      highlightColor:
+                                                          Colors.transparent,
+                                                      onTap: () async {
+                                                        context.pushNamed(
+                                                          'Training',
+                                                          queryParameters: {
+                                                            'rlUsersTrainings':
+                                                                serializeParam(
+                                                              trainingsItem.id,
+                                                              ParamType.int,
+                                                            ),
+                                                            'isCoachView':
+                                                                serializeParam(
+                                                              true,
+                                                              ParamType.bool,
+                                                            ),
+                                                          }.withoutNulls,
+                                                        );
+                                                      },
+                                                      child:
+                                                          TrainingViewCardWidget(
+                                                        key: Key(
+                                                            'Keytg2_${trainingsIndex}_of_${trainings.length}'),
+                                                        name: valueOrDefault<
+                                                            String>(
+                                                          trainingsItem.name,
+                                                          'null',
+                                                        ),
+                                                        exerciesesCount:
+                                                            valueOrDefault<
+                                                                String>(
+                                                          functions.getExerciseWord(
+                                                              trainingsItem
+                                                                  .exercisesCount!),
+                                                          'null',
                                                         ),
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 32.0, 0.0, 0.0),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        var shouldSetState = false;
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () => _model.unfocusNode
+                                                      .canRequestFocus
+                                                  ? FocusScope.of(context)
+                                                      .requestFocus(
+                                                          _model.unfocusNode)
+                                                  : FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child: const BottomPlanDeleteWidget(),
+                                              ),
+                                            );
+                                          },
+                                        ).then((value) => safeSetState(() =>
+                                            _model.outputPlanDelete = value));
+
+                                        shouldSetState = true;
+                                        if (_model.outputPlanDelete!) {
+                                          while (_model.index <
+                                              viewUsersTrainingsViewUsersTrainingsRowList
+                                                  .length) {
+                                            await UsersTrainingsTable().delete(
+                                              matchingRows: (rows) => rows.eq(
+                                                'id',
+                                                viewUsersTrainingsViewUsersTrainingsRowList[
+                                                        _model.index]
+                                                    .id,
+                                              ),
+                                            );
+                                            _model.index = _model.index + 1;
+                                            setState(() {});
+                                          }
+                                          _model.index = 0;
+                                          setState(() {});
+                                          context.safePop();
+                                        } else {
+                                          if (shouldSetState) setState(() {});
+                                          return;
+                                        }
+
+                                        if (shouldSetState) setState(() {});
+                                      },
+                                      text: 'Удалить план',
+                                      options: FFButtonOptions(
+                                        width: double.infinity,
+                                        height: 52.0,
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            24.0, 0.0, 24.0, 0.0),
+                                        iconPadding:
+                                            const EdgeInsetsDirectional.fromSTEB(
+                                                0.0, 0.0, 0.0, 0.0),
+                                        color: const Color(0x00060409),
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .labelSmall
+                                            .override(
+                                              fontFamily: 'NTSomic',
+                                              letterSpacing: 0.0,
+                                              useGoogleFonts: false,
+                                            ),
+                                        elevation: 0.0,
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
                                       ),
+                                      showLoadingIndicator: false,
                                     ),
                                   ),
                                 ].addToEnd(const SizedBox(height: 60.0)),

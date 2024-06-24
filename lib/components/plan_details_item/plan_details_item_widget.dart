@@ -1,10 +1,12 @@
 import '/backend/schema/structs/index.dart';
 import '/backend/supabase/supabase.dart';
+import '/components/encouregment_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'plan_details_item_model.dart';
 export 'plan_details_item_model.dart';
 
@@ -65,6 +67,8 @@ class _PlanDetailsItemWidgetState extends State<PlanDetailsItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
@@ -263,193 +267,240 @@ class _PlanDetailsItemWidgetState extends State<PlanDetailsItemWidget> {
                               children: List.generate(childSets.length,
                                   (childSetsIndex) {
                                 final childSetsItem = childSets[childSetsIndex];
-                                return InkWell(
-                                  splashColor: Colors.transparent,
-                                  focusColor: Colors.transparent,
-                                  hoverColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onTap: () async {
-                                    if (widget.isCoachView) {
-                                      return;
-                                    }
-
-                                    if (widget.isStartTraining) {
-                                      if (_model.setsFact
-                                          .where((e) =>
-                                              (e.index == childSetsIndex) &&
-                                              (functions.dateTimeToDate(functions
-                                                      .stringToDateTime(e
-                                                          .completedDateTime)) ==
-                                                  functions.dateTimeToDate(
-                                                      widget.dateTime)))
-                                          .toList()
-                                          .isNotEmpty) {
-                                        _model.removeAtIndexFromSetsFact(
-                                            childSetsIndex);
-                                        setState(() {});
-                                      } else {
-                                        _model.addToSetsFact(SetsFactStruct(
-                                          index: childSetsIndex,
-                                          completedDateTime:
-                                              functions.dateTimeToString(
-                                                  getCurrentTimestamp),
-                                          reps: valueOrDefault<int>(
-                                            childSetsItem.reps,
-                                            0,
-                                          ),
-                                          kg: valueOrDefault<double>(
-                                            childSetsItem.weightKg,
-                                            0.0,
-                                          ),
-                                        ));
-                                        setState(() {});
+                                return Builder(
+                                  builder: (context) => InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      if (widget.isCoachView) {
+                                        return;
                                       }
 
-                                      _model.updateSetsFactListStruct(
-                                        (e) => e
-                                          ..setsFact = _model.setsFact.toList(),
-                                      );
-                                      _model.updatePage(() {});
-                                      await UsersTrainingsExercisesTable()
-                                          .update(
-                                        data: {
-                                          'sets_fact':
-                                              _model.setsFactList?.toMap(),
-                                        },
-                                        matchingRows: (rows) => rows.eq(
-                                          'id',
-                                          widget.usersTrainingExercisesRow?.id,
-                                        ),
-                                      );
+                                      if (widget.isStartTraining) {
+                                        if (_model.setsFact
+                                            .where((e) =>
+                                                (e.index == childSetsIndex) &&
+                                                (functions.dateTimeToDate(functions
+                                                        .stringToDateTime(e
+                                                            .completedDateTime)) ==
+                                                    functions.dateTimeToDate(
+                                                        widget.dateTime)))
+                                            .toList()
+                                            .isNotEmpty) {
+                                          _model.removeAtIndexFromSetsFact(
+                                              childSetsIndex);
+                                          setState(() {});
+                                        } else {
+                                          _model.addToSetsFact(SetsFactStruct(
+                                            index: childSetsIndex,
+                                            completedDateTime:
+                                                functions.dateTimeToString(
+                                                    getCurrentTimestamp),
+                                            reps: valueOrDefault<int>(
+                                              childSetsItem.reps,
+                                              0,
+                                            ),
+                                            kg: valueOrDefault<double>(
+                                              childSetsItem.weightKg,
+                                              0.0,
+                                            ),
+                                          ));
+                                          setState(() {});
+                                          FFAppState().evenCounter =
+                                              FFAppState().evenCounter + 1;
+                                          setState(() {});
+                                          if (functions.isEven(
+                                              FFAppState().evenCounter)!) {
+                                            await showDialog(
+                                              context: context,
+                                              builder: (dialogContext) {
+                                                return Dialog(
+                                                  elevation: 0,
+                                                  insetPadding: EdgeInsets.zero,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  alignment:
+                                                      const AlignmentDirectional(
+                                                              0.0, 1.0)
+                                                          .resolve(
+                                                              Directionality.of(
+                                                                  context)),
+                                                  child: const EncouregmentWidget(),
+                                                );
+                                              },
+                                            ).then((value) => setState(() {}));
+                                          }
+                                        }
 
-                                      setState(() {});
-                                    } else {
-                                      return;
-                                    }
-                                  },
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  valueOrDefault<String>(
-                                                    '${valueOrDefault<String>(
-                                                      (childSetsIndex + 1)
-                                                          .toString(),
-                                                      '1',
-                                                    )} подход',
-                                                    'null',
-                                                  ),
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily: 'NTSomic',
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: false,
-                                                      ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 4.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '${valueOrDefault<String>(
-                                                      childSetsItem.reps
-                                                          .toString(),
-                                                      'null',
-                                                    )} раз • ${valueOrDefault<String>(
-                                                      formatNumber(
-                                                        childSetsItem.weightKg,
-                                                        formatType:
-                                                            FormatType.custom,
-                                                        format: '#.#',
-                                                        locale: '',
-                                                      ),
-                                                      'null',
-                                                    )} кг',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodySmall
-                                                        .override(
-                                                          fontFamily: 'NTSomic',
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .secondaryText,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: false,
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                        _model.updateSetsFactListStruct(
+                                          (e) => e
+                                            ..setsFact =
+                                                _model.setsFact.toList(),
+                                        );
+                                        _model.updatePage(() {});
+                                        await UsersTrainingsExercisesTable()
+                                            .update(
+                                          data: {
+                                            'sets_fact':
+                                                _model.setsFactList?.toMap(),
+                                          },
+                                          matchingRows: (rows) => rows.eq(
+                                            'id',
+                                            widget
+                                                .usersTrainingExercisesRow?.id,
                                           ),
-                                          if (!widget.isCoachView)
-                                            Container(
-                                              width: 36.0,
-                                              height: 36.0,
-                                              decoration: BoxDecoration(
-                                                color: _model
-                                                        .setsFact
-                                                        .where((e) =>
-                                                            (e.index ==
-                                                                childSetsIndex) &&
-                                                            (functions.dateTimeToDate(
-                                                                    functions
-                                                                        .stringToDateTime(e
+                                        );
+                                      } else {
+                                        return;
+                                      }
+                                    },
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 8.0),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.max,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      valueOrDefault<String>(
+                                                        '${valueOrDefault<String>(
+                                                          (childSetsIndex + 1)
+                                                              .toString(),
+                                                          '1',
+                                                        )} подход',
+                                                        'null',
+                                                      ),
+                                                      style: FlutterFlowTheme
+                                                              .of(context)
+                                                          .bodyMedium
+                                                          .override(
+                                                            fontFamily:
+                                                                'NTSomic',
+                                                            letterSpacing: 0.0,
+                                                            useGoogleFonts:
+                                                                false,
+                                                          ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsetsDirectional
+                                                              .fromSTEB(
+                                                                  0.0,
+                                                                  4.0,
+                                                                  0.0,
+                                                                  0.0),
+                                                      child: Text(
+                                                        '${valueOrDefault<String>(
+                                                          childSetsItem.reps
+                                                              .toString(),
+                                                          'null',
+                                                        )} раз • ${valueOrDefault<String>(
+                                                          formatNumber(
+                                                            childSetsItem
+                                                                .weightKg,
+                                                            formatType:
+                                                                FormatType
+                                                                    .custom,
+                                                            format: '#.#',
+                                                            locale: '',
+                                                          ),
+                                                          'null',
+                                                        )} кг',
+                                                        style:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodySmall
+                                                                .override(
+                                                                  fontFamily:
+                                                                      'NTSomic',
+                                                                  color: FlutterFlowTheme.of(
+                                                                          context)
+                                                                      .secondaryText,
+                                                                  letterSpacing:
+                                                                      0.0,
+                                                                  useGoogleFonts:
+                                                                      false,
+                                                                ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              if (!widget.isCoachView)
+                                                Container(
+                                                  width: 36.0,
+                                                  height: 36.0,
+                                                  decoration: BoxDecoration(
+                                                    color: _model.setsFact
+                                                            .where((e) =>
+                                                                (e.index ==
+                                                                    childSetsIndex) &&
+                                                                (functions.dateTimeToDate(
+                                                                        functions.stringToDateTime(e
                                                                             .completedDateTime)) ==
-                                                                functions
-                                                                    .dateTimeToDate(
-                                                                        widget
+                                                                    functions
+                                                                        .dateTimeToDate(widget
                                                                             .dateTime)))
-                                                        .toList()
-                                                        .isNotEmpty
-                                                    ? FlutterFlowTheme.of(
-                                                            context)
-                                                        .primary
-                                                    : FlutterFlowTheme.of(
-                                                            context)
-                                                        .white8,
-                                                shape: BoxShape.circle,
-                                                border: Border.all(
-                                                  color: const Color(0x06949494),
+                                                            .toList()
+                                                            .isNotEmpty
+                                                        ? FlutterFlowTheme.of(
+                                                                context)
+                                                            .primary
+                                                        : FlutterFlowTheme.of(
+                                                                context)
+                                                            .white8,
+                                                    shape: BoxShape.circle,
+                                                    border: Border.all(
+                                                      color: const Color(0x06949494),
+                                                    ),
+                                                  ),
+                                                  child: Align(
+                                                    alignment:
+                                                        const AlignmentDirectional(
+                                                            0.0, 0.0),
+                                                    child: Icon(
+                                                      FFIcons.kcheck,
+                                                      color: FlutterFlowTheme
+                                                              .of(context)
+                                                          .primaryBackground,
+                                                      size: 24.0,
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              child: Align(
-                                                alignment: const AlignmentDirectional(
-                                                    0.0, 0.0),
-                                                child: Icon(
-                                                  FFIcons.kcheck,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryBackground,
-                                                  size: 24.0,
-                                                ),
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 8.0, 0.0, 0.0),
-                                        child: Container(
-                                          width: double.infinity,
-                                          height: 1.0,
-                                          decoration: const BoxDecoration(
-                                            color: Color(0x1EFDFDFD),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        if (childSetsIndex !=
+                                            functions.subtractOne(
+                                                SetsPlanListStruct.maybeFromMap(
+                                                        widget
+                                                            .usersTrainingExercisesRow
+                                                            ?.setsPlan)
+                                                    ?.setsPlan
+                                                    .length))
+                                          Container(
+                                            width: double.infinity,
+                                            height: 1.0,
+                                            decoration: const BoxDecoration(
+                                              color: Color(0x1EFDFDFD),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
                                   ),
                                 );
                               }).divide(const SizedBox(height: 8.0)),

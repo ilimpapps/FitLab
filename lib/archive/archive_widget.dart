@@ -456,7 +456,7 @@ class _ArchiveWidgetState extends State<ArchiveWidget>
                                                                             String>(
                                                                           functions.differenceInHoursAndMinutes(
                                                                               trainingsItem.startTraining!,
-                                                                              trainingsItem.endDate!),
+                                                                              trainingsItem.endTraining!),
                                                                           '0',
                                                                         ),
                                                                         style: FlutterFlowTheme.of(context)

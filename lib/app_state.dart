@@ -21,12 +21,6 @@ class FFAppState extends ChangeNotifier {
     _safeInit(() {
       _isCoach = prefs.getBool('ff_isCoach') ?? _isCoach;
     });
-    _safeInit(() {
-      _startTrainingDateTime = prefs.containsKey('ff_startTrainingDateTime')
-          ? DateTime.fromMillisecondsSinceEpoch(
-              prefs.getInt('ff_startTrainingDateTime')!)
-          : _startTrainingDateTime;
-    });
   }
 
   void update(VoidCallback callback) {
@@ -107,7 +101,7 @@ class FFAppState extends ChangeNotifier {
 
   void updateTrainingStartEndListStruct(
       Function(TrainingStartEndStruct) updateFn) {
-    updateFn(trainingStartEndList);
+    updateFn(_trainingStartEndList);
   }
 
   String _rlCoach = '';
@@ -116,13 +110,10 @@ class FFAppState extends ChangeNotifier {
     _rlCoach = value;
   }
 
-  DateTime? _startTrainingDateTime;
-  DateTime? get startTrainingDateTime => _startTrainingDateTime;
-  set startTrainingDateTime(DateTime? value) {
-    _startTrainingDateTime = value;
-    value != null
-        ? prefs.setInt('ff_startTrainingDateTime', value.millisecondsSinceEpoch)
-        : prefs.remove('ff_startTrainingDateTime');
+  int _evenCounter = 1;
+  int get evenCounter => _evenCounter;
+  set evenCounter(int value) {
+    _evenCounter = value;
   }
 }
 

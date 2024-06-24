@@ -663,11 +663,11 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget>
                                                 width:
                                                     MediaQuery.sizeOf(context)
                                                             .width -
-                                                        40,
+                                                        70,
                                                 height:
                                                     (MediaQuery.sizeOf(context)
                                                                 .width -
-                                                            40) /
+                                                            70) /
                                                         1.78,
                                                 child: Stack(
                                                   children: [
@@ -690,7 +690,7 @@ class _ExercisesDetailsWidgetState extends State<ExercisesDetailsWidget>
                                                             MediaQuery.sizeOf(
                                                                         context)
                                                                     .width -
-                                                                40,
+                                                                70,
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
